@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  MovieApp
-//
-//  Created by Five on 27.03.2022..
-//
-
 import UIKit
 
 @main
