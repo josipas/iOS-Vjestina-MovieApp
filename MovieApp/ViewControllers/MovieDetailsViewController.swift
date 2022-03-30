@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 class MovieDetailsViewController: UIViewController {
     private var overviewLabel: UILabel!
@@ -117,11 +118,7 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
 
 extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let peopleCollectionWidth = peopleCollection.frame.width
         let itemDimension = (peopleCollectionWidth - 2*10) / 3
 

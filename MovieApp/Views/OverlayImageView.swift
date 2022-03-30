@@ -19,7 +19,9 @@ class OverlayImageView: UIView {
     private var percentageLabel: UILabel!
     private var userScoreLabel: UILabel!
     private var roundImageView: RoundImageBackgroundView!
-    private var emptyView: UIView!
+    private var userScoreStack: LeadingHorizontalStack!
+    private var movieTitleStack: LeadingHorizontalStack!
+    private var movieDetailsStack: LeadingHorizontalStack!
 
     init(imageTitle: String, title: String, year: String, date: String, genres: String, duration: String) {
         super.init(frame: .zero)
@@ -47,26 +49,26 @@ class OverlayImageView: UIView {
         roundImageView = RoundImageBackgroundView(imageTitle: "star")
         overlay = UIView()
         titleLabel = UILabel()
+        yearLabel = UILabel()
         dateLabel = UILabel()
         genresLabel = UILabel()
         durationLabel = UILabel()
-        yearLabel = UILabel()
         percentageLabel = UILabel()
         userScoreLabel = UILabel()
+        userScoreStack = LeadingHorizontalStack(percentageLabel, userScoreLabel)
+        movieTitleStack = LeadingHorizontalStack(titleLabel, yearLabel)
+        movieDetailsStack  = LeadingHorizontalStack(genresLabel, durationLabel)
     }
 
     private func addSubviews() {
         addSubview(backgroundImageView)
         addSubview(overlay)
 
-        overlay.addSubview(titleLabel)
+        overlay.addSubview(userScoreStack)
+        overlay.addSubview(movieTitleStack)
         overlay.addSubview(dateLabel)
-        overlay.addSubview(genresLabel)
-        overlay.addSubview(durationLabel)
-        overlay.addSubview(yearLabel)
+        overlay.addSubview(movieDetailsStack)
         overlay.addSubview(roundImageView)
-        overlay.addSubview(percentageLabel)
-        overlay.addSubview(userScoreLabel)
     }
 
 
@@ -106,47 +108,32 @@ class OverlayImageView: UIView {
         userScoreLabel.text = "User Score"
         userScoreLabel.font = .systemFont(ofSize: 14, weight: .bold)
         userScoreLabel.textColor = .white
+
     }
 
     private func addConstraints() {
-        roundImageView.snp.makeConstraints {
-            $0.height.width.equalTo(32)
-            $0.bottom.equalToSuperview().offset(-20)
+        userScoreStack.snp.makeConstraints {
+            $0.trailing.leading.equalToSuperview()
+            $0.bottom.equalTo(titleLabel.snp.top).offset(-20)
         }
 
-        genresLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.bottom.equalTo(roundImageView.snp.top).offset(-15)
-        }
-
-        durationLabel.snp.makeConstraints {
-            $0.leading.equalTo(genresLabel.snp.trailing).offset(5)
-            $0.bottom.equalTo(roundImageView.snp.top).offset(-15)
+        movieTitleStack.snp.makeConstraints {
+            $0.trailing.leading.equalToSuperview()
+            $0.bottom.equalTo(dateLabel.snp.top).offset(-8)
         }
 
         dateLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.bottom.equalTo(genresLabel.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(movieDetailsStack.snp.top).offset(-2)
+        }
+        movieDetailsStack.snp.makeConstraints {
+            $0.trailing.leading.equalToSuperview()
+            $0.bottom.equalTo(roundImageView.snp.top).offset(-15)
         }
 
-        titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.bottom.equalTo(dateLabel.snp.top).offset(-3)
-        }
-
-        yearLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLabel.snp.trailing).offset(5)
-            $0.bottom.equalTo(dateLabel.snp.top).offset(-3)
-        }
-
-        percentageLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(10)
-            $0.bottom.equalTo(titleLabel.snp.top).offset(-20)
-        }
-
-        userScoreLabel.snp.makeConstraints {
-            $0.leading.equalTo(percentageLabel.snp.trailing).offset(15)
-            $0.bottom.equalTo(titleLabel.snp.top).offset(-20)
+        roundImageView.snp.makeConstraints {
+            $0.height.width.equalTo(32)
+            $0.bottom.equalToSuperview().offset(-20)
         }
 
         backgroundImageView.snp.makeConstraints {
@@ -166,6 +153,8 @@ class OverlayImageView: UIView {
         let startColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor
         let endColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
         gradient.colors = [startColor, endColor]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0.2)
+        gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
         backgroundImageView.layer.insertSublayer(gradient, at: 0)
     }
 }
