@@ -16,6 +16,8 @@ class OverlayImageView: UIView {
     private var dateLabel: UILabel!
     private var genresLabel: UILabel!
     private var durationLabel: UILabel!
+    private var percentageLabel: UILabel!
+    private var userScoreLabel: UILabel!
     private var roundImageView: RoundImageBackgroundView!
 
     init(imageTitle: String, title: String, year: String, date: String, genres: String, duration: String) {
@@ -48,6 +50,8 @@ class OverlayImageView: UIView {
         genresLabel = UILabel()
         durationLabel = UILabel()
         yearLabel = UILabel()
+        percentageLabel = UILabel()
+        userScoreLabel = UILabel()
     }
 
     private func addSubviews() {
@@ -60,6 +64,8 @@ class OverlayImageView: UIView {
         overlay.addSubview(durationLabel)
         overlay.addSubview(yearLabel)
         overlay.addSubview(roundImageView)
+        overlay.addSubview(percentageLabel)
+        overlay.addSubview(userScoreLabel)
     }
 
 
@@ -91,6 +97,14 @@ class OverlayImageView: UIView {
         yearLabel.text = year
         yearLabel.font = .systemFont(ofSize: 24)
         yearLabel.textColor = .white
+
+        percentageLabel.text = "76%"
+        percentageLabel.font = .systemFont(ofSize: 14, weight: .bold)
+        percentageLabel.textColor = .white
+
+        userScoreLabel.text = "User Score"
+        userScoreLabel.font = .systemFont(ofSize: 14, weight: .bold)
+        userScoreLabel.textColor = .white
     }
 
     private func addConstraints() {
@@ -122,6 +136,16 @@ class OverlayImageView: UIView {
         yearLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.trailing).offset(5)
             $0.bottom.equalTo(dateLabel.snp.top).offset(-3)
+        }
+
+        percentageLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(10)
+            $0.bottom.equalTo(titleLabel.snp.top).offset(-20)
+        }
+
+        userScoreLabel.snp.makeConstraints {
+            $0.leading.equalTo(percentageLabel.snp.trailing).offset(15)
+            $0.bottom.equalTo(titleLabel.snp.top).offset(-20)
         }
 
         backgroundImageView.snp.makeConstraints {

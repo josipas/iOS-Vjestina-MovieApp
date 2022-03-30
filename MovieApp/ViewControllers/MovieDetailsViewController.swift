@@ -30,7 +30,7 @@ class MovieDetailsViewController: UIViewController {
             ("Jack Marcum", "Screenplay"),
             ("Matt Holloway", "Screenplay"),
         ])
-        imageView = OverlayImageView(imageTitle: "ironman", title: "Iron Man", year: "(2008)", date: "05/02/2008 (US)", genres: "Actioon, Science Fiction, Adventure", duration: "2h 6m")
+        imageView = OverlayImageView(imageTitle: "ironman", title: "Iron Man", year: "(2008)", date: "05/02/2008 (US)", genres: "Action, Science Fiction, Adventure", duration: "2h 6m")
     }
 
     private func addSubviews() {
