@@ -19,6 +19,7 @@ class OverlayImageView: UIView {
     private var percentageLabel: UILabel!
     private var userScoreLabel: UILabel!
     private var roundImageView: RoundImageBackgroundView!
+    private var emptyView: UIView!
 
     init(imageTitle: String, title: String, year: String, date: String, genres: String, duration: String) {
         super.init(frame: .zero)
@@ -153,7 +154,8 @@ class OverlayImageView: UIView {
         }
 
         overlay.snp.makeConstraints {
-            $0.trailing.top.height.equalToSuperview()
+            $0.top.height.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-18)
             $0.leading.equalToSuperview().offset(18)
         }
     }

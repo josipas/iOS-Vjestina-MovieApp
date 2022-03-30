@@ -1,18 +1,15 @@
 import UIKit
 import SnapKit
 
-class TitleSubtitleView: UIView {
-    private var title: String?
-    private var subtitle: String?
+class TitleSubtitleCell: UICollectionViewCell {
+
+    static let reuseIdentifier = String(describing: TitleSubtitleCell.self)
 
     private var titleLabel: UILabel!
     private var subtitleLabel: UILabel!
 
-    init(title: String, subtitle: String) {
+    override init(frame: CGRect) {
         super.init(frame: .zero)
-        self.title = title
-        self.subtitle = subtitle
-
         buildViews()
     }
 
@@ -42,10 +39,7 @@ class TitleSubtitleView: UIView {
     }
 
     private func styleViews() {
-        titleLabel.text = title
         titleLabel.font = .systemFont(ofSize: 14, weight: .bold)
-
-        subtitleLabel.text = subtitle
         subtitleLabel.font = .systemFont(ofSize: 14, weight: .regular)
     }
 
@@ -56,7 +50,12 @@ class TitleSubtitleView: UIView {
 
         subtitleLabel.snp.makeConstraints {
             $0.trailing.leading.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(4)
         }
+    }
+
+    func configure(title: String, subtitle: String) {
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
     }
 }
