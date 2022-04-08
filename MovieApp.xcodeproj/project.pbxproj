@@ -11,6 +11,7 @@
 		520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */; };
 		520E161B2800C6B200001999 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E161A2800C6B200001999 /* MovieListViewController.swift */; };
 		520E161E2800C7C400001999 /* MovieAppData in Frameworks */ = {isa = PBXBuildFile; productRef = 520E161D2800C7C400001999 /* MovieAppData */; };
+		520E16202800CC7300001999 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E161F2800CC7300001999 /* SearchBarView.swift */; };
 		520F9BB127F0CAF700605244 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB027F0CAF700605244 /* AppDelegate.swift */; };
 		520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB227F0CAF700605244 /* SceneDelegate.swift */; };
 		520F9BB527F0CAF700605244 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB427F0CAF700605244 /* MovieDetailsViewController.swift */; };
@@ -25,6 +26,7 @@
 		520E16162800B03C00001999 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		520E161A2800C6B200001999 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
+		520E161F2800CC7300001999 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		520F9BAD27F0CAF700605244 /* MovieApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		520F9BB027F0CAF700605244 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		520F9BB227F0CAF700605244 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				520F9BC827F0F58100605244 /* TitleSubtitleCell.swift */,
 				52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */,
 				52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */,
+				520E161F2800CC7300001999 /* SearchBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				520E16202800CC7300001999 /* SearchBarView.swift in Sources */,
 				520F9BB527F0CAF700605244 /* MovieDetailsViewController.swift in Sources */,
 				520F9BB127F0CAF700605244 /* AppDelegate.swift in Sources */,
 				52D6FDBF27F1CFBF007CD74A /* OverlayImageView.swift in Sources */,
