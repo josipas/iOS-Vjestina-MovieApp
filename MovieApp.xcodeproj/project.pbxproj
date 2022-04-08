@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E16162800B03C00001999 /* UIColor+Extensions.swift */; };
 		520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */; };
+		520E161B2800C6B200001999 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E161A2800C6B200001999 /* MovieListViewController.swift */; };
+		520E161E2800C7C400001999 /* MovieAppData in Frameworks */ = {isa = PBXBuildFile; productRef = 520E161D2800C7C400001999 /* MovieAppData */; };
 		520F9BB127F0CAF700605244 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB027F0CAF700605244 /* AppDelegate.swift */; };
 		520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB227F0CAF700605244 /* SceneDelegate.swift */; };
 		520F9BB527F0CAF700605244 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB427F0CAF700605244 /* MovieDetailsViewController.swift */; };
@@ -22,6 +24,7 @@
 /* Begin PBXFileReference section */
 		520E16162800B03C00001999 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Extensions.swift"; sourceTree = "<group>"; };
+		520E161A2800C6B200001999 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		520F9BAD27F0CAF700605244 /* MovieApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		520F9BB027F0CAF700605244 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		520F9BB227F0CAF700605244 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				520F9BC627F0E2BA00605244 /* SnapKit in Frameworks */,
+				520E161E2800C7C400001999 /* MovieAppData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				520F9BB427F0CAF700605244 /* MovieDetailsViewController.swift */,
+				520E161A2800C6B200001999 /* MovieListViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -120,6 +125,7 @@
 			name = MovieApp;
 			packageProductDependencies = (
 				520F9BC527F0E2BA00605244 /* SnapKit */,
+				520E161D2800C7C400001999 /* MovieAppData */,
 			);
 			productName = MovieApp;
 			productReference = 520F9BAD27F0CAF700605244 /* MovieApp.app */;
@@ -151,6 +157,7 @@
 			mainGroup = 520F9BA427F0CAF700605244;
 			packageReferences = (
 				520F9BC427F0E2BA00605244 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				520E161C2800C7C400001999 /* XCRemoteSwiftPackageReference "MovieAppData" */,
 			);
 			productRefGroup = 520F9BAE27F0CAF700605244 /* Products */;
 			projectDirPath = "";
@@ -183,6 +190,7 @@
 				520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */,
 				520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */,
+				520E161B2800C6B200001999 /* MovieListViewController.swift in Sources */,
 				520F9BC927F0F58100605244 /* TitleSubtitleCell.swift in Sources */,
 				52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */,
 			);
@@ -383,6 +391,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		520E161C2800C7C400001999 /* XCRemoteSwiftPackageReference "MovieAppData" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fiveagency/MovieAppData";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		520F9BC427F0E2BA00605244 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -394,6 +410,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		520E161D2800C7C400001999 /* MovieAppData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 520E161C2800C7C400001999 /* XCRemoteSwiftPackageReference "MovieAppData" */;
+			productName = MovieAppData;
+		};
 		520F9BC527F0E2BA00605244 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 520F9BC427F0E2BA00605244 /* XCRemoteSwiftPackageReference "SnapKit" */;
