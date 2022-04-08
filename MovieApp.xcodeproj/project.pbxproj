@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E16162800B03C00001999 /* UIColor+Extensions.swift */; };
+		520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */; };
 		520F9BB127F0CAF700605244 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB027F0CAF700605244 /* AppDelegate.swift */; };
 		520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB227F0CAF700605244 /* SceneDelegate.swift */; };
 		520F9BB527F0CAF700605244 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BB427F0CAF700605244 /* MovieDetailsViewController.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		520E16162800B03C00001999 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		520F9BAD27F0CAF700605244 /* MovieApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		520F9BB027F0CAF700605244 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		520F9BB227F0CAF700605244 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +47,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		520E16152800B01400001999 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				520E16162800B03C00001999 /* UIColor+Extensions.swift */,
+				520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		520F9BA427F0CAF700605244 = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +77,7 @@
 			children = (
 				520F9BB027F0CAF700605244 /* AppDelegate.swift */,
 				520F9BB227F0CAF700605244 /* SceneDelegate.swift */,
+				520E16152800B01400001999 /* Extensions */,
 				520F9BCA27F0F63400605244 /* ViewControllers */,
 				520F9BC727F0F54900605244 /* Views */,
 				520F9BB927F0CAF800605244 /* Assets.xcassets */,
@@ -169,6 +183,8 @@
 				520F9BB527F0CAF700605244 /* MovieDetailsViewController.swift in Sources */,
 				520F9BB127F0CAF700605244 /* AppDelegate.swift in Sources */,
 				52D6FDBF27F1CFBF007CD74A /* OverlayImageView.swift in Sources */,
+				520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */,
+				520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */,
 				525DDF1727F4D129002ED67A /* LeadingHorizontalStack.swift in Sources */,
 				520F9BC927F0F58100605244 /* TitleSubtitleCell.swift in Sources */,

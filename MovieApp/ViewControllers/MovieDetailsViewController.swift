@@ -2,10 +2,10 @@ import UIKit
 import SnapKit
 
 class MovieDetailsViewController: UIViewController {
+    private var imageView: OverlayImageView!
     private var overviewLabel: UILabel!
     private var overviewDescription: UILabel!
     private var peopleCollection: UICollectionView!
-    private var imageView: OverlayImageView!
 
     private let data = [
         ("Don Heck", "Characters"),
@@ -18,7 +18,6 @@ class MovieDetailsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
 
         buildViews()
     }
@@ -26,7 +25,8 @@ class MovieDetailsViewController: UIViewController {
     private func buildViews() {
         createViews()
         addSubviews()
-        configureViews()
+        styleViews()
+        addConstraints()
     }
 
     private func createViews() {
@@ -56,12 +56,9 @@ class MovieDetailsViewController: UIViewController {
         view.addSubview(peopleCollection)
     }
 
-    private func configureViews() {
-        styleViews()
-        addConstraints()
-    }
-
     private func styleViews() {
+        view.backgroundColor = .white
+
         overviewLabel.text = "Overview"
         overviewLabel.font = .systemFont(ofSize: 20, weight: .bold)
         overviewLabel.textColor = UIColor(red: 0.043, green: 0.145, blue: 0.247, alpha: 1)
@@ -75,24 +72,24 @@ class MovieDetailsViewController: UIViewController {
         imageView.snp.makeConstraints {
             $0.height.equalTo(303)
             $0.trailing.leading.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
         }
 
         overviewLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(18)
-            $0.trailing.equalToSuperview().offset(-30)
+            $0.leading.equalToSuperview().inset(18)
+            $0.trailing.equalToSuperview().inset(30)
             $0.top.equalTo(imageView.snp.bottom).offset(20)
         }
 
         overviewDescription.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-27)
+            $0.leading.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(27)
             $0.top.equalTo(overviewLabel.snp.bottom).offset(8)
         }
 
         peopleCollection.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(16)
             $0.top.equalTo(overviewDescription.snp.bottom).offset(22)
             $0.bottom.equalToSuperview()
         }
@@ -117,7 +114,6 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
 }
 
 extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let peopleCollectionWidth = peopleCollection.frame.width
         let itemDimension = (peopleCollectionWidth - 2*10) / 3

@@ -1,6 +1,8 @@
 import UIKit
 import SnapKit
 
+//napraviti strrukturu, predati u init
+
 class OverlayImageView: UIView {
     private var title: String?
     private var date: String?
@@ -11,17 +13,13 @@ class OverlayImageView: UIView {
 
     private var backgroundImageView: UIImageView!
     private var overlay: UIView!
-    private var titleLabel: UILabel!
-    private var yearLabel: UILabel!
-    private var dateLabel: UILabel!
-    private var genresLabel: UILabel!
-    private var durationLabel: UILabel!
+    private var userScoreStack: UIStackView!
     private var percentageLabel: UILabel!
     private var userScoreLabel: UILabel!
+    private var titleYearLabel: UILabel!
+    private var dateLabel: UILabel!
+    private var genresDurationLabel: UILabel!
     private var roundImageView: RoundImageBackgroundView!
-    private var userScoreStack: LeadingHorizontalStack!
-    private var movieTitleStack: LeadingHorizontalStack!
-    private var movieDetailsStack: LeadingHorizontalStack!
 
     init(imageTitle: String, title: String, year: String, date: String, genres: String, duration: String) {
         super.init(frame: .zero)
@@ -38,68 +36,42 @@ class OverlayImageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func buildViews() {
+    private func buildViews() {
         createViews()
         addSubviews()
-        configureViews()
+        styleViews()
+        addConstraints()
     }
 
     private func createViews() {
         backgroundImageView = UIImageView(image: backgroundImage)
         roundImageView = RoundImageBackgroundView(imageTitle: "star")
         overlay = UIView()
-        titleLabel = UILabel()
-        yearLabel = UILabel()
         dateLabel = UILabel()
-        genresLabel = UILabel()
-        durationLabel = UILabel()
         percentageLabel = UILabel()
         userScoreLabel = UILabel()
-        userScoreStack = LeadingHorizontalStack(percentageLabel, userScoreLabel)
-        movieTitleStack = LeadingHorizontalStack(titleLabel, yearLabel)
-        movieDetailsStack  = LeadingHorizontalStack(genresLabel, durationLabel)
+        userScoreStack = UIStackView()
+        titleYearLabel = UILabel()
+        genresDurationLabel = UILabel()
     }
 
     private func addSubviews() {
         addSubview(backgroundImageView)
         addSubview(overlay)
 
+        userScoreStack.addArrangedSubview(percentageLabel)
+        userScoreStack.addArrangedSubview(userScoreLabel)
+
         overlay.addSubview(userScoreStack)
-        overlay.addSubview(movieTitleStack)
+        overlay.addSubview(titleYearLabel)
         overlay.addSubview(dateLabel)
-        overlay.addSubview(movieDetailsStack)
+        overlay.addSubview(genresDurationLabel)
         overlay.addSubview(roundImageView)
     }
-
-
-    private func configureViews() {
-        styleViews()
-        addConstraints()
-     }
 
     private func styleViews() {
         backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.clipsToBounds = true
-
-        titleLabel.text = title
-        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
-        titleLabel.textColor = .white
-
-        dateLabel.text = date
-        dateLabel.font = .systemFont(ofSize: 14)
-        dateLabel.textColor = .white
-
-        genresLabel.text = genres
-        genresLabel.font = .systemFont(ofSize: 14)
-        genresLabel.textColor = .white
-
-        durationLabel.text = duration
-        durationLabel.font = .systemFont(ofSize: 14, weight: .bold)
-        durationLabel.textColor = .white
-
-        yearLabel.text = year
-        yearLabel.font = .systemFont(ofSize: 24)
-        yearLabel.textColor = .white
 
         percentageLabel.text = "76%"
         percentageLabel.font = .systemFont(ofSize: 14, weight: .bold)
@@ -109,24 +81,46 @@ class OverlayImageView: UIView {
         userScoreLabel.font = .systemFont(ofSize: 14, weight: .bold)
         userScoreLabel.textColor = .white
 
+        userScoreStack.axis = .horizontal
+        userScoreStack.alignment = .trailing
+        userScoreStack.distribution = .fill
+        userScoreStack.spacing = 8
+
+        if
+            let title = title,
+            let year = year
+        {
+            titleYearLabel.attributedText = NSMutableAttributedString.getAPartialBoldAttributedString(fromString: "\(title) \(year)",withSubstring: "\(title)", forSize: 24, color: .white)
+        }
+
+        dateLabel.text = date
+        dateLabel.font = .systemFont(ofSize: 14)
+        dateLabel.textColor = .white
+
+        if
+            let genres = genres,
+            let duration = duration
+        {
+            genresDurationLabel.attributedText = NSMutableAttributedString.getAPartialBoldAttributedString(fromString:"\(genres)  \(duration)",withSubstring: "\(duration)", forSize: 14, color: .white)
+        }
     }
 
     private func addConstraints() {
         userScoreStack.snp.makeConstraints {
             $0.trailing.leading.equalToSuperview()
-            $0.bottom.equalTo(titleLabel.snp.top).offset(-20)
+            $0.bottom.equalTo(titleYearLabel.snp.top).offset(-20)
         }
 
-        movieTitleStack.snp.makeConstraints {
+        titleYearLabel.snp.makeConstraints {
             $0.trailing.leading.equalToSuperview()
             $0.bottom.equalTo(dateLabel.snp.top).offset(-8)
         }
 
         dateLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(movieDetailsStack.snp.top).offset(-2)
+            $0.bottom.equalTo(genresDurationLabel.snp.top).offset(-2)
         }
-        movieDetailsStack.snp.makeConstraints {
+        genresDurationLabel.snp.makeConstraints {
             $0.trailing.leading.equalToSuperview()
             $0.bottom.equalTo(roundImageView.snp.top).offset(-15)
         }
@@ -148,6 +142,8 @@ class OverlayImageView: UIView {
     }
 
     override func layoutSubviews() {
+        super.layoutSubviews()
+
         let gradient = CAGradientLayer()
         gradient.frame = self.bounds
         let startColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor

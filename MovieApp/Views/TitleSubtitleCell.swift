@@ -2,7 +2,6 @@ import UIKit
 import SnapKit
 
 class TitleSubtitleCell: UICollectionViewCell {
-
     static let reuseIdentifier = String(describing: TitleSubtitleCell.self)
 
     private var titleLabel: UILabel!
@@ -17,10 +16,16 @@ class TitleSubtitleCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func configure(title: String, subtitle: String) {
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
+    }
+
     private func buildViews() {
         createViews()
         addSubviews()
-        configureViews()
+        styleViews()
+        addConstraints()
     }
 
     private func createViews() {
@@ -31,11 +36,6 @@ class TitleSubtitleCell: UICollectionViewCell {
     private func addSubviews() {
         addSubview(titleLabel)
         addSubview(subtitleLabel)
-    }
-
-    private func configureViews() {
-        styleViews()
-        addConstraints()
     }
 
     private func styleViews() {
@@ -52,10 +52,5 @@ class TitleSubtitleCell: UICollectionViewCell {
             $0.trailing.leading.equalToSuperview()
             $0.top.equalTo(titleLabel.snp.bottom).offset(4)
         }
-    }
-
-    func configure(title: String, subtitle: String) {
-        titleLabel.text = title
-        subtitleLabel.text = subtitle
     }
 }

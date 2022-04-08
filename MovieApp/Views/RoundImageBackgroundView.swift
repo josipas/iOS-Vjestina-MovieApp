@@ -19,7 +19,8 @@ class RoundImageBackgroundView: UIView {
     private func buildViews() {
         createViews()
         addSubviews()
-        configureViews()
+        styleViews()
+        addConstraints()
     }
 
     private func createViews() {
@@ -30,14 +31,8 @@ class RoundImageBackgroundView: UIView {
         addSubview(imageView)
     }
 
-    private func configureViews() {
-        styleViews()
-        addConstraints()
-    }
-
     private func styleViews() {
-        layer.backgroundColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 0.6).cgColor
-        layer.cornerRadius = 16
+        layer.backgroundColor = UIColor(hex: "#757575")?.cgColor
         clipsToBounds = true
         tintColor = .white
     }
@@ -48,6 +43,12 @@ class RoundImageBackgroundView: UIView {
             $0.width.equalTo(14)
             $0.height.equalTo(13)
         }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        layer.cornerRadius = self.bounds.height / 2
     }
 }
 
