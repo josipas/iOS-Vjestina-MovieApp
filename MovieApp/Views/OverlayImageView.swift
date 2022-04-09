@@ -45,7 +45,7 @@ class OverlayImageView: UIView {
 
     private func createViews() {
         backgroundImageView = UIImageView(image: backgroundImage)
-        roundImageView = RoundImageBackgroundView(imageTitle: "star")
+        roundImageView = RoundImageBackgroundView(imageTitle: "star", hexColor: "#757575", size: 14)
         overlay = UIView()
         dateLabel = UILabel()
         percentageLabel = UILabel()

@@ -55,8 +55,6 @@ class SearchBarView: UIView {
         outerHorizontalStack.addArrangedSubview(cancelButton)
 
         addSubview(outerHorizontalStack)
-
-
     }
 
     private func styleViews() {
@@ -90,7 +88,7 @@ class SearchBarView: UIView {
     private func addConstraints() {
         outerHorizontalStack.snp.makeConstraints {
             $0.trailing.leading.equalToSuperview().inset(18)
-            $0.height.equalTo(45)
+            $0.top.bottom.equalToSuperview()
         }
 
         innerHorizontalStack.snp.makeConstraints {

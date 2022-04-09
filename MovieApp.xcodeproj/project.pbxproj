@@ -18,6 +18,11 @@
 		520F9BBA27F0CAF800605244 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 520F9BB927F0CAF800605244 /* Assets.xcassets */; };
 		520F9BC627F0E2BA00605244 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 520F9BC527F0E2BA00605244 /* SnapKit */; };
 		520F9BC927F0F58100605244 /* TitleSubtitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BC827F0F58100605244 /* TitleSubtitleCell.swift */; };
+		52178041280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52178040280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift */; };
+		52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */; };
+		5217804528018D2C00A66BD7 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5217804428018D2C00A66BD7 /* UIImageView+Extensions.swift */; };
+		521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521780462801C67500A66BD7 /* CustomSegmentedControl.swift */; };
+		5217804B2801DC4700A66BD7 /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5217804A2801DC4700A66BD7 /* SegmentView.swift */; };
 		52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */; };
 		52D6FDBF27F1CFBF007CD74A /* OverlayImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +39,11 @@
 		520F9BB927F0CAF800605244 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		520F9BBE27F0CAF800605244 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		520F9BC827F0F58100605244 /* TitleSubtitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSubtitleCell.swift; sourceTree = "<group>"; };
+		52178040280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesNonFocusTableViewCell.swift; sourceTree = "<group>"; };
+		52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePictureCollectionViewCell.swift; sourceTree = "<group>"; };
+		5217804428018D2C00A66BD7 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
+		521780462801C67500A66BD7 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
+		5217804A2801DC4700A66BD7 /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
 		52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageBackgroundView.swift; sourceTree = "<group>"; };
 		52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -56,6 +66,7 @@
 			children = (
 				520E16162800B03C00001999 /* UIColor+Extensions.swift */,
 				520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */,
+				5217804428018D2C00A66BD7 /* UIImageView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -97,6 +108,10 @@
 				52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */,
 				52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */,
 				520E161F2800CC7300001999 /* SearchBarView.swift */,
+				52178040280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift */,
+				52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */,
+				521780462801C67500A66BD7 /* CustomSegmentedControl.swift */,
+				5217804A2801DC4700A66BD7 /* SegmentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -187,15 +202,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5217804528018D2C00A66BD7 /* UIImageView+Extensions.swift in Sources */,
 				520E16202800CC7300001999 /* SearchBarView.swift in Sources */,
 				520F9BB527F0CAF700605244 /* MovieDetailsViewController.swift in Sources */,
 				520F9BB127F0CAF700605244 /* AppDelegate.swift in Sources */,
 				52D6FDBF27F1CFBF007CD74A /* OverlayImageView.swift in Sources */,
+				52178041280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift in Sources */,
 				520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */,
+				521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */,
+				52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */,
 				520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */,
 				520E161B2800C6B200001999 /* MovieListViewController.swift in Sources */,
 				520F9BC927F0F58100605244 /* TitleSubtitleCell.swift in Sources */,
+				5217804B2801DC4700A66BD7 /* SegmentView.swift in Sources */,
 				52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

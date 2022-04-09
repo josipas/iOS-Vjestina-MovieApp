@@ -2,12 +2,18 @@ import UIKit
 import SnapKit
 
 class RoundImageBackgroundView: UIView {
+    private var hexColor: String?
+    private var size: Int?
+
     private var image: UIImage!
     private var imageView: UIImageView!
 
-    init(imageTitle: String) {
+    init(imageTitle: String, hexColor: String, size: Int) {
         super.init(frame: .zero)
+
         image = UIImage(systemName: imageTitle)
+        self.hexColor = hexColor
+        self.size = size
 
         buildViews()
     }
@@ -32,16 +38,25 @@ class RoundImageBackgroundView: UIView {
     }
 
     private func styleViews() {
-        layer.backgroundColor = UIColor(hex: "#757575")?.cgColor
         clipsToBounds = true
         tintColor = .white
+        imageView.contentMode = .scaleAspectFit
+
+        guard let hexColor = hexColor else {
+            return
+        }
+
+        layer.backgroundColor = UIColor(hex: hexColor)?.withAlphaComponent(0.6).cgColor
     }
 
     private func addConstraints() {
+        guard let size = size else {
+            return
+        }
+
         imageView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.width.equalTo(14)
-            $0.height.equalTo(13)
+            $0.width.width.equalTo(size)
         }
     }
 
