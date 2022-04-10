@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		520BFA4428033C7C0016E12F /* MoviesFocusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BFA4328033C7C0016E12F /* MoviesFocusTableViewCell.swift */; };
+		520BFA462803537F0016E12F /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BFA452803537F0016E12F /* UIImageView+Extensions.swift */; };
 		520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E16162800B03C00001999 /* UIColor+Extensions.swift */; };
 		520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */; };
 		520E161B2800C6B200001999 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520E161A2800C6B200001999 /* MovieListViewController.swift */; };
@@ -20,7 +22,6 @@
 		520F9BC927F0F58100605244 /* TitleSubtitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F9BC827F0F58100605244 /* TitleSubtitleCell.swift */; };
 		52178041280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52178040280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift */; };
 		52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */; };
-		5217804528018D2C00A66BD7 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5217804428018D2C00A66BD7 /* UIImageView+Extensions.swift */; };
 		521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521780462801C67500A66BD7 /* CustomSegmentedControl.swift */; };
 		5217804B2801DC4700A66BD7 /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5217804A2801DC4700A66BD7 /* SegmentView.swift */; };
 		52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */; };
@@ -28,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		520BFA4328033C7C0016E12F /* MoviesFocusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesFocusTableViewCell.swift; sourceTree = "<group>"; };
+		520BFA452803537F0016E12F /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 		520E16162800B03C00001999 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		520E161A2800C6B200001999 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
@@ -41,7 +44,6 @@
 		520F9BC827F0F58100605244 /* TitleSubtitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSubtitleCell.swift; sourceTree = "<group>"; };
 		52178040280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesNonFocusTableViewCell.swift; sourceTree = "<group>"; };
 		52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePictureCollectionViewCell.swift; sourceTree = "<group>"; };
-		5217804428018D2C00A66BD7 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 		521780462801C67500A66BD7 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		5217804A2801DC4700A66BD7 /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
 		52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageBackgroundView.swift; sourceTree = "<group>"; };
@@ -66,7 +68,7 @@
 			children = (
 				520E16162800B03C00001999 /* UIColor+Extensions.swift */,
 				520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */,
-				5217804428018D2C00A66BD7 /* UIImageView+Extensions.swift */,
+				520BFA452803537F0016E12F /* UIImageView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -112,6 +114,7 @@
 				52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */,
 				521780462801C67500A66BD7 /* CustomSegmentedControl.swift */,
 				5217804A2801DC4700A66BD7 /* SegmentView.swift */,
+				520BFA4328033C7C0016E12F /* MoviesFocusTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -202,12 +205,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5217804528018D2C00A66BD7 /* UIImageView+Extensions.swift in Sources */,
 				520E16202800CC7300001999 /* SearchBarView.swift in Sources */,
 				520F9BB527F0CAF700605244 /* MovieDetailsViewController.swift in Sources */,
 				520F9BB127F0CAF700605244 /* AppDelegate.swift in Sources */,
 				52D6FDBF27F1CFBF007CD74A /* OverlayImageView.swift in Sources */,
 				52178041280169F500A66BD7 /* MoviesNonFocusTableViewCell.swift in Sources */,
+				520BFA4428033C7C0016E12F /* MoviesFocusTableViewCell.swift in Sources */,
 				520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */,
 				521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */,
 				52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */,
@@ -216,6 +219,7 @@
 				520E161B2800C6B200001999 /* MovieListViewController.swift in Sources */,
 				520F9BC927F0F58100605244 /* TitleSubtitleCell.swift in Sources */,
 				5217804B2801DC4700A66BD7 /* SegmentView.swift in Sources */,
+				520BFA462803537F0016E12F /* UIImageView+Extensions.swift in Sources */,
 				52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

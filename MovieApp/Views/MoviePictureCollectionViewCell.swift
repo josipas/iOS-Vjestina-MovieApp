@@ -25,7 +25,7 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
     }
 
     func set(imageUrl: String) {
-        imageView.load(url: URL(fileURLWithPath: imageUrl))
+        //imageView.load(url: URL(fileURLWithPath: imageUrl))
     }
 
     private func buildViews() {

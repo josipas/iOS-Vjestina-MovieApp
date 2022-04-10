@@ -19,7 +19,6 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         buildViews()
-        addContraints()
     }
 
     required init?(coder: NSCoder) {
@@ -107,7 +106,6 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
         else {
             fatalError()
         }
-
         //let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath) ?? ""
         //cell.set(imageUrl: imageUrl)
 

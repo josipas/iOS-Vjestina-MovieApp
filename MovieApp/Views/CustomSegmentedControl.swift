@@ -5,12 +5,6 @@ class CustomSegmentedControl: UIView {
 
     private var stackView: UIStackView!
 
-    private var scrollView: UIScrollView!
-
-    private var wrapper: UIView!
-
-
-
     init(buttonTitles: [String]) {
         super.init(frame: .zero)
         self.buttonTitles = buttonTitles
@@ -31,14 +25,9 @@ class CustomSegmentedControl: UIView {
 
     private func createViews() {
         stackView = UIStackView()
-        scrollView = UIScrollView()
-        wrapper = UIView()
     }
 
     private func addSubviews() {
-        addSubview(scrollView)
-        scrollView.addSubview(stackView)
-        //wrapper.addSubview(stackView)
         addSubview(stackView)
         buttonTitles?.forEach({ title in
             let view = SegmentView(title: title)
@@ -53,18 +42,12 @@ class CustomSegmentedControl: UIView {
         stackView.distribution = .fill
         stackView.spacing = 22
 
-        scrollView.bounces = true
         (stackView.arrangedSubviews[0] as! SegmentView).reloadData(state: true)
     }
 
     private func addConstraints() {
         stackView.snp.makeConstraints {
             $0.top.leading.trailing.bottom.equalToSuperview()
-        }
-
-        scrollView.snp.makeConstraints {
-            $0.top.leading.bottom.equalToSuperview()
-            $0.height.equalTo(30)
         }
     }
 }
