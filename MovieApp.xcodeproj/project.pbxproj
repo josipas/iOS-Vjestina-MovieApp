@@ -94,9 +94,9 @@
 			children = (
 				520F9BB027F0CAF700605244 /* AppDelegate.swift */,
 				520F9BB227F0CAF700605244 /* SceneDelegate.swift */,
-				520E16152800B01400001999 /* Extensions */,
 				520F9BCA27F0F63400605244 /* ViewControllers */,
 				520F9BC727F0F54900605244 /* Views */,
+				520E16152800B01400001999 /* Extensions */,
 				520F9BB927F0CAF800605244 /* Assets.xcassets */,
 				520F9BBE27F0CAF800605244 /* Info.plist */,
 			);

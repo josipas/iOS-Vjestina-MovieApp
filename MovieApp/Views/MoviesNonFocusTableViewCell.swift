@@ -31,10 +31,10 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
         titleLabel.text = nil
     }
 
-    func set(title: String, buttonTitles: [String]) {
+    func set(title: String, filters: [String]) {
         titleLabel.text = title
-        buttonTitles.forEach({ title in
-            let view = SegmentView(title: title)
+        filters.forEach({ filter in
+            let view = SegmentView(title: filter)
             view.delegate = self
             selectionView.addArrangedSubview(view)
         })
@@ -49,6 +49,7 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
 
     private func createViews() {
         titleLabel = UILabel()
+
         selectionView = CustomSegmentedControl()
 
         let layout = UICollectionViewFlowLayout()
@@ -112,6 +113,7 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
         else {
             fatalError()
         }
+        
         let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath) ?? ""
         cell.set(imageUrl: imageUrl)
 

@@ -107,7 +107,6 @@ class SearchBarView: UIView {
 
     private func addActions() {
         xMarkButton.addTarget(self, action: #selector(tappedXMarkButton), for: .touchUpInside)
-
         cancelButton.addTarget(self, action: #selector(tappedCancelButton), for: .touchUpInside)
     }
 
