@@ -67,10 +67,6 @@ class MoviesFocusTableViewCell: UITableViewCell {
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 10
         containerView.backgroundColor = .white
-
-        self.layer.cornerRadius = 10
-        self.layer.shadowRadius = 8
-        self.layer.shadowOpacity = 0.1
     }
 
     private func addContraints() {
@@ -100,6 +96,8 @@ class MoviesFocusTableViewCell: UITableViewCell {
     }
 
     override func layoutSubviews() {
-        //self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 0)).cgPath
+        self.layer.cornerRadius = 10
+        self.layer.shadowRadius = 8
+        self.layer.shadowOpacity = 0.1
     }
 }

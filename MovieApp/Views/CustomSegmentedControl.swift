@@ -1,19 +1,55 @@
 import UIKit
 
 class CustomSegmentedControl: UIView {
-    private var buttonTitles: [String]?
-
+    private var scrollView: UIScrollView!
     private var stackView: UIStackView!
 
-    init(buttonTitles: [String]) {
+    init() {
         super.init(frame: .zero)
-        self.buttonTitles = buttonTitles
 
         buildViews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+
+        addConstraints()
+    }
+
+    func addConstraints() {
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.height.equalTo(self.snp.height)
+        }
+    }
+
+    func addArrangedSubview(_ view: UIView) {
+        if stackView.arrangedSubviews.count == 0 {
+            let view = view as? SegmentView
+            view?.reloadData(state: true)
+        }
+
+        stackView.addArrangedSubview(view)
+    }
+
+    func reloadData(view: SegmentView) {
+        let views = stackView.arrangedSubviews
+        view.reloadData(state: true)
+
+        views.forEach { currentView in
+            if currentView != view {
+                let segment = currentView as! SegmentView
+                segment.reloadData(state: false)
+            }
+        }
     }
 
     private func buildViews() {
@@ -25,43 +61,19 @@ class CustomSegmentedControl: UIView {
 
     private func createViews() {
         stackView = UIStackView()
+        scrollView = UIScrollView()
     }
 
     private func addSubviews() {
-        addSubview(stackView)
-        buttonTitles?.forEach({ title in
-            let view = SegmentView(title: title)
-            view.delegate = self
-            stackView.addArrangedSubview(view)
-        })
+        addSubview(scrollView)
+        scrollView.addSubview(stackView)
     }
 
     private func styleViews() {
         stackView.axis = .horizontal
-        stackView.alignment = .leading
-        stackView.distribution = .fill
         stackView.spacing = 22
 
-        (stackView.arrangedSubviews[0] as! SegmentView).reloadData(state: true)
-    }
-
-    private func addConstraints() {
-        stackView.snp.makeConstraints {
-            $0.top.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-}
-
-extension CustomSegmentedControl: SegmentDelegate {
-    func segmentTapped(view: SegmentView) {
-        let views = stackView.arrangedSubviews
-        view.reloadData(state: true)
-
-        views.forEach { currentView in
-            if currentView != view {
-                let segment = currentView as! SegmentView
-                segment.reloadData(state: false)
-            }
-        }
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
     }
 }

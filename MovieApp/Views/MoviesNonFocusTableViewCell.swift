@@ -31,8 +31,13 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
         titleLabel.text = nil
     }
 
-    func set(title: String) {
+    func set(title: String, buttonTitles: [String]) {
         titleLabel.text = title
+        buttonTitles.forEach({ title in
+            let view = SegmentView(title: title)
+            view.delegate = self
+            selectionView.addArrangedSubview(view)
+        })
     }
 
     private func buildViews() {
@@ -44,7 +49,7 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
 
     private func createViews() {
         titleLabel = UILabel()
-        selectionView = CustomSegmentedControl(buttonTitles: ["Tv","Popular"])
+        selectionView = CustomSegmentedControl()
 
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 8
@@ -75,6 +80,7 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
 
         selectionView.snp.makeConstraints {
             $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(12)
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.height.equalTo(30)
         }
@@ -106,8 +112,8 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
         else {
             fatalError()
         }
-        //let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath) ?? ""
-        //cell.set(imageUrl: imageUrl)
+        let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath) ?? ""
+        cell.set(imageUrl: imageUrl)
 
         return cell
     }
@@ -124,9 +130,17 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension MoviesNonFocusTableViewCell: SegmentDelegate {
+    func segmentTapped(view: SegmentView) {
+        selectionView.reloadData(view: view)
+    }
+}
+
 extension UITableViewCell {
     open override func addSubview(_ view: UIView) {
         super.addSubview(view)
         sendSubviewToBack(contentView)
     }
 }
+
+

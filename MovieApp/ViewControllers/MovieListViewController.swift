@@ -122,7 +122,7 @@ extension MovieListViewController:UITableViewDataSource {
             }
 
             cell.delegate = self
-            cell.set(title: filters[indexPath.section])
+            cell.set(title: filters[indexPath.section], buttonTitles: ["Action", "Comedy", "Romance", "Action", "Comedy", "Romance"])
             cell.selectionStyle = .none
 
             return cell

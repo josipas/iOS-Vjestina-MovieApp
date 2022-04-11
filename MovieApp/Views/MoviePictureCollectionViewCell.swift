@@ -21,11 +21,11 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        //imageView.image = nil
+        imageView.image = nil
     }
 
     func set(imageUrl: String) {
-        //imageView.load(url: URL(fileURLWithPath: imageUrl))
+        imageView.load(imageUrl: imageUrl)
     }
 
     private func buildViews() {
@@ -36,7 +36,7 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
     }
 
     private func createViews() {
-        imageView = UIImageView(image: UIImage(named: "ironman"))
+        imageView = UIImageView()
         heartView = RoundImageBackgroundView(imageTitle: "heart", hexColor: "#0B253F", size: 18)
     }
 
