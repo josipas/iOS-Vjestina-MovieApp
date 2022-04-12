@@ -1,4 +1,5 @@
 import UIKit
+import MovieAppData
 
 class MoviesFocusTableViewCell: UITableViewCell {
     static let reuseIdentifier = String(describing: MoviesFocusTableViewCell.self)
@@ -26,10 +27,10 @@ class MoviesFocusTableViewCell: UITableViewCell {
         descriptionLabel.text = nil
     }
 
-    func set(imageUrl: String, title: String, description: String) {
-        posterView.load(imageUrl: imageUrl)
-        titleLabel.text = title
-        descriptionLabel.text = description
+    func set(movie: MovieModel) {
+        posterView.load(imageUrl: movie.imageUrl)
+        titleLabel.text = movie.title
+        descriptionLabel.text = movie.description
     }
 
     private func buildViews() {

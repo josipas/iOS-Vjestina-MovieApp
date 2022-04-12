@@ -7,7 +7,7 @@ class MovieListViewController: UIViewController {
     private var nonFocusTableView: UITableView!
     private var focusTableView: UITableView!
 
-    private let filters = ["What's popular", "Free To Watch", "Trending"]
+    private let groups = MovieGroup.allCases
     private let movies = Movies.all()
 
     override func viewDidLoad() {
@@ -94,7 +94,7 @@ extension MovieListViewController: UITableViewDelegate {
 extension MovieListViewController:UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == nonFocusTableView {
-            return filters.count
+            return 3
         }
         else {
             return 1
@@ -122,7 +122,7 @@ extension MovieListViewController:UITableViewDataSource {
             }
 
             cell.delegate = self
-            cell.set(title: filters[indexPath.section], filters: ["Action", "Comedy", "Romance", "Action", "Comedy", "Romance"])
+            cell.set(group: groups[indexPath.section])
             cell.selectionStyle = .none
 
             return cell
@@ -138,7 +138,7 @@ extension MovieListViewController:UITableViewDataSource {
 
             let movie = movies[indexPath.row]
 
-            cell.set(imageUrl: movie.imageUrl, title: movie.title, description: movie.description)
+            cell.set(movie: movie)
             cell.selectionStyle = .none
 
             return cell
@@ -160,11 +160,21 @@ extension MovieListViewController:UITableViewDataSource {
 }
 
 extension MovieListViewController: CustomCollectionViewDelegate {
-    func getMoviesCount(section: Int) -> Int {
-        movies.count
+    func getMoviesCount(group: MovieGroup) -> Int {
+        return movies.filter { movie in
+            movie.group.contains {
+                $0 == group
+            }
+        }.count
     }
 
-    func getMovieImageUrl(indexPath: IndexPath) -> String {
-        return movies[indexPath.row].imageUrl
+    func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String {
+        let filteredMovies = movies.filter { movie in
+            movie.group.contains {
+                $0 == group
+            }
+        }
+
+        return filteredMovies[indexPath.row].imageUrl
     }
 }

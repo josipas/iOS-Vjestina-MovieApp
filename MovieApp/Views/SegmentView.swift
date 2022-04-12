@@ -8,7 +8,6 @@ class SegmentView: UIView {
     private var title: String?
     private var label: UILabel!
     private var selectView: UIView!
-    private var state = false
 
     weak var delegate: SegmentDelegate?
 
@@ -58,16 +57,9 @@ class SegmentView: UIView {
         label.text = title
         selectView.backgroundColor = UIColor(hex: "#0B253F")
 
-        switch state {
-        case true:
-            label.textColor = UIColor(hex: "#000000")
-            label.font = .systemFont(ofSize: 16, weight: .bold)
-            selectView.isHidden = false
-        case false:
-            label.font = .systemFont(ofSize: 16)
-            label.textColor = UIColor(hex: "#828282")
-            selectView.isHidden = true
-        }
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = UIColor(hex: "#828282")
+        selectView.isHidden = true
     }
 
     private func addConstraints() {

@@ -24,6 +24,8 @@
 		52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */; };
 		521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521780462801C67500A66BD7 /* CustomSegmentedControl.swift */; };
 		5217804B2801DC4700A66BD7 /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5217804A2801DC4700A66BD7 /* SegmentView.swift */; };
+		52CFCCE72805A08200BBB9E0 /* MovieFilter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CFCCE62805A08200BBB9E0 /* MovieFilter+Extensions.swift */; };
+		52CFCCE92805A33700BBB9E0 /* MovieGroup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CFCCE82805A33700BBB9E0 /* MovieGroup+Extensions.swift */; };
 		52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */; };
 		52D6FDBF27F1CFBF007CD74A /* OverlayImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +48,8 @@
 		52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePictureCollectionViewCell.swift; sourceTree = "<group>"; };
 		521780462801C67500A66BD7 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		5217804A2801DC4700A66BD7 /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
+		52CFCCE62805A08200BBB9E0 /* MovieFilter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieFilter+Extensions.swift"; sourceTree = "<group>"; };
+		52CFCCE82805A33700BBB9E0 /* MovieGroup+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieGroup+Extensions.swift"; sourceTree = "<group>"; };
 		52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageBackgroundView.swift; sourceTree = "<group>"; };
 		52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,6 +73,8 @@
 				520E16162800B03C00001999 /* UIColor+Extensions.swift */,
 				520E16182800B5B600001999 /* NSMutableAttributedString+Extensions.swift */,
 				520BFA452803537F0016E12F /* UIImageView+Extensions.swift */,
+				52CFCCE62805A08200BBB9E0 /* MovieFilter+Extensions.swift */,
+				52CFCCE82805A33700BBB9E0 /* MovieGroup+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -213,6 +219,8 @@
 				520BFA4428033C7C0016E12F /* MoviesFocusTableViewCell.swift in Sources */,
 				520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */,
 				521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */,
+				52CFCCE92805A33700BBB9E0 /* MovieGroup+Extensions.swift in Sources */,
+				52CFCCE72805A08200BBB9E0 /* MovieFilter+Extensions.swift in Sources */,
 				52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */,
 				520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */,

@@ -2,8 +2,8 @@ import UIKit
 import MovieAppData
 
 protocol CustomCollectionViewDelegate: AnyObject {
-    func getMoviesCount(section: Int) -> Int
-    func getMovieImageUrl(indexPath: IndexPath) -> String
+    func getMoviesCount(group: MovieGroup) -> Int
+    func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String
 }
 
 class MoviesNonFocusTableViewCell: UITableViewCell {
@@ -12,6 +12,8 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
     private var titleLabel: UILabel!
     private var selectionView: CustomSegmentedControl!
     private var collectionView: UICollectionView!
+
+    private var group: MovieGroup?
 
     weak var delegate: CustomCollectionViewDelegate?
 
@@ -29,12 +31,14 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
         super.prepareForReuse()
 
         titleLabel.text = nil
+        self.group = nil
     }
 
-    func set(title: String, filters: [String]) {
-        titleLabel.text = title
-        filters.forEach({ filter in
-            let view = SegmentView(title: filter)
+    func set(group: MovieGroup) {
+        titleLabel.text = group.description
+        self.group = group
+        group.filters.forEach({ filter in
+            let view = SegmentView(title: filter.description)
             view.delegate = self
             selectionView.addArrangedSubview(view)
         })
@@ -104,7 +108,8 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        delegate?.getMoviesCount(section: section) ?? 0
+        guard let group = group else { return 0 }
+        return delegate?.getMoviesCount(group: group) ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -113,9 +118,13 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
         else {
             fatalError()
         }
-        
-        let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath) ?? ""
-        cell.set(imageUrl: imageUrl)
+
+        if
+            let group = group,
+            let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath, group: group)
+        {
+            cell.set(imageUrl: imageUrl)
+        }
 
         return cell
     }
