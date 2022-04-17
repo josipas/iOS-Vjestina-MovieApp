@@ -7,8 +7,21 @@ class MovieListViewController: UIViewController {
     private var nonFocusTableView: UITableView!
     private var focusTableView: UITableView!
 
-    private let groups = MovieGroup.allCases
+    private let groups: [MovieGroup] = MovieGroup.allCases.filter { $0.description != nil }
     private let movies = Movies.all()
+    private let filteredMovies: [MovieGroup: [MovieModel]] = { () -> [MovieGroup: [MovieModel]] in
+        var dict = [MovieGroup: [MovieModel]]()
+
+        for group in MovieGroup.allCases {
+            dict[group] = Movies.all().filter { movie in
+                movie.group.contains {
+                    $0 == group
+                }
+            }
+        }
+
+        return dict
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,12 +106,9 @@ extension MovieListViewController: UITableViewDelegate {
 
 extension MovieListViewController:UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        if tableView == nonFocusTableView {
-            return 3
-        }
-        else {
-            return 1
-        }
+        guard tableView == nonFocusTableView else { return 1 }
+
+        return groups.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -161,20 +171,10 @@ extension MovieListViewController:UITableViewDataSource {
 
 extension MovieListViewController: CustomCollectionViewDelegate {
     func getMoviesCount(group: MovieGroup) -> Int {
-        return movies.filter { movie in
-            movie.group.contains {
-                $0 == group
-            }
-        }.count
+        return filteredMovies[group]?.count ?? 0
     }
 
     func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String {
-        let filteredMovies = movies.filter { movie in
-            movie.group.contains {
-                $0 == group
-            }
-        }
-
-        return filteredMovies[indexPath.row].imageUrl
+        return filteredMovies[group]?[indexPath.row].imageUrl ?? ""
     }
 }
