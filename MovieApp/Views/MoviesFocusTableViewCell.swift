@@ -1,6 +1,10 @@
 import UIKit
 import MovieAppData
 
+protocol TappedMovieDelegate: AnyObject {
+    func movieTapped()
+}
+
 class MoviesFocusTableViewCell: UITableViewCell {
     static let reuseIdentifier = String(describing: MoviesFocusTableViewCell.self)
 
@@ -8,6 +12,8 @@ class MoviesFocusTableViewCell: UITableViewCell {
     private var posterView: UIImageView!
     private var titleLabel: UILabel!
     private var descriptionLabel: UILabel!
+
+    weak var delegate: TappedMovieDelegate?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -38,6 +44,7 @@ class MoviesFocusTableViewCell: UITableViewCell {
         addSubviews()
         styleViews()
         addContraints()
+        addGesture()
     }
 
     private func createViews() {
@@ -94,6 +101,15 @@ class MoviesFocusTableViewCell: UITableViewCell {
             $0.trailing.equalToSuperview().inset(12)
             $0.bottom.equalToSuperview().inset(20)
         }
+    }
+
+    private func addGesture() {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        self.addGestureRecognizer(recognizer)
+    }
+
+    @objc private func viewTapped() {
+        delegate?.movieTapped()
     }
 
     override func layoutSubviews() {

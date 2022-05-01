@@ -6,6 +6,8 @@ class MovieListViewController: UIViewController {
     private var searchBar: SearchBarView!
     private var nonFocusTableView: UITableView!
     private var focusTableView: UITableView!
+    private var navigationBarImageView: UIImageView!
+    private var navigationBarImage: UIImage!
 
     private let groups: [MovieGroup] = MovieGroup.allCases.filter { $0.description != nil }
     private let movies = Movies.all()
@@ -47,6 +49,9 @@ class MovieListViewController: UIViewController {
         focusTableView = UITableView()
         focusTableView.delegate = self
         focusTableView.dataSource = self
+
+        navigationBarImageView = UIImageView()
+        navigationBarImage = UIImage(named: "tmdb")
     }
 
     private func addSubviews() {
@@ -64,6 +69,18 @@ class MovieListViewController: UIViewController {
         focusTableView.register(MoviesFocusTableViewCell.self, forCellReuseIdentifier: MoviesFocusTableViewCell.reuseIdentifier)
         focusTableView.separatorStyle = .none
         focusTableView.isHidden = true
+
+        navigationBarImageView.frame = CGRect(x: 0, y: 0, width: 145, height: 35)
+        navigationBarImageView.image = navigationBarImage
+
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(hex: "#0B253F")
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
+        self.navigationItem.titleView = navigationBarImageView
+
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", image: nil, primaryAction: nil, menu: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = .white
     }
 
     private func addConstraints() {
@@ -148,6 +165,7 @@ extension MovieListViewController:UITableViewDataSource {
 
             let movie = movies[indexPath.row]
 
+            cell.delegate = self
             cell.set(movie: movie)
             cell.selectionStyle = .none
 
@@ -176,5 +194,13 @@ extension MovieListViewController: CustomCollectionViewDelegate {
 
     func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String {
         return filteredMovies[group]?[indexPath.row].imageUrl ?? ""
+    }
+
+    
+}
+
+extension MovieListViewController: TappedMovieDelegate {
+    func movieTapped() {
+        self.navigationController?.pushViewController(MovieDetailsViewController(), animated: true)
     }
 }

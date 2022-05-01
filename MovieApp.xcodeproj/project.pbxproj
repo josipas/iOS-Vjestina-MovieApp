@@ -24,6 +24,7 @@
 		52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */; };
 		521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521780462801C67500A66BD7 /* CustomSegmentedControl.swift */; };
 		5217804B2801DC4700A66BD7 /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5217804A2801DC4700A66BD7 /* SegmentView.swift */; };
+		5291C13E281ECB1200AEC866 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5291C13D281ECB1200AEC866 /* FavoritesViewController.swift */; };
 		52CFCCE72805A08200BBB9E0 /* MovieFilter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CFCCE62805A08200BBB9E0 /* MovieFilter+Extensions.swift */; };
 		52CFCCE92805A33700BBB9E0 /* MovieGroup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CFCCE82805A33700BBB9E0 /* MovieGroup+Extensions.swift */; };
 		52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */; };
@@ -48,6 +49,7 @@
 		52178042280173B300A66BD7 /* MoviePictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePictureCollectionViewCell.swift; sourceTree = "<group>"; };
 		521780462801C67500A66BD7 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		5217804A2801DC4700A66BD7 /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
+		5291C13D281ECB1200AEC866 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		52CFCCE62805A08200BBB9E0 /* MovieFilter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieFilter+Extensions.swift"; sourceTree = "<group>"; };
 		52CFCCE82805A33700BBB9E0 /* MovieGroup+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieGroup+Extensions.swift"; sourceTree = "<group>"; };
 		52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageBackgroundView.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			children = (
 				520F9BB427F0CAF700605244 /* MovieDetailsViewController.swift */,
 				520E161A2800C6B200001999 /* MovieListViewController.swift */,
+				5291C13D281ECB1200AEC866 /* FavoritesViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */,
 				52CFCCE92805A33700BBB9E0 /* MovieGroup+Extensions.swift in Sources */,
 				52CFCCE72805A08200BBB9E0 /* MovieFilter+Extensions.swift in Sources */,
+				5291C13E281ECB1200AEC866 /* FavoritesViewController.swift in Sources */,
 				52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */,
 				520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */,

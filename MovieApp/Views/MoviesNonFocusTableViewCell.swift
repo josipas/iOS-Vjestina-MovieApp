@@ -1,7 +1,7 @@
 import UIKit
 import MovieAppData
 
-protocol CustomCollectionViewDelegate: AnyObject {
+protocol CustomCollectionViewDelegate: TappedMovieDelegate {
     func getMoviesCount(group: MovieGroup) -> Int
     func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String
 }
@@ -126,6 +126,7 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
             let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath, group: group)
         {
             cell.set(imageUrl: imageUrl)
+            cell.delegate = delegate
         }
 
         return cell

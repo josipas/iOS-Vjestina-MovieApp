@@ -12,10 +12,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         window = UIWindow(windowScene: windowScene)
-        //let initialViewController = MovieDetailsViewController()
-        let initialViewController = MovieListViewController()
+        let initialViewController = createTabBar()
         window?.rootViewController = initialViewController
         window?.makeKeyAndVisible()
+    }
+
+    func createTabBar() -> UITabBarController {
+        let tabBar = UITabBarController()
+
+        UITabBar.appearance().backgroundColor = .white
+        tabBar.tabBar.tintColor = UIColor(hex: "#0B253F")
+        tabBar.viewControllers = [createMovieListNavigationController(), createFavoritesNavigationController()]
+
+        return tabBar
+    }
+
+    func createMovieListNavigationController() -> UINavigationController {
+        let movieListViewController = MovieListViewController()
+
+        movieListViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), selectedImage: UIImage(systemName: "house.fill"))
+
+        return UINavigationController(rootViewController: movieListViewController)
+    }
+
+    func createFavoritesNavigationController() -> UINavigationController {
+        let favoritesViewController = FavoritesViewController()
+
+        favoritesViewController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart"), selectedImage: UIImage(systemName: "heart.fill"))
+
+        return UINavigationController(rootViewController: favoritesViewController)
+    }
+
+    func setUpNavigationBar(view: UINavigationController) {
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(hex: "#0B253F")
+
+        view.navigationBar.scrollEdgeAppearance = appearance
+        view.navigationItem.titleView = UIImageView(image: UIImage(named: "tmdb"))
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -45,7 +78,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 

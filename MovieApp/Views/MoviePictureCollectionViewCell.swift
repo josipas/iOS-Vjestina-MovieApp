@@ -8,6 +8,8 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
     private var heartView: RoundImageBackgroundView!
     private var view: UIView!
 
+    weak var delegate: TappedMovieDelegate?
+
     override init(frame: CGRect) {
         super.init(frame: .zero)
 
@@ -33,6 +35,7 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
         addSubviews()
         styleViews()
         addContraints()
+        addGesture()
     }
 
     private func createViews() {
@@ -60,5 +63,15 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
             $0.height.width.equalTo(32)
             $0.top.leading.equalToSuperview().inset(10)
         }
+    }
+
+    private func addGesture() {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(recognizer)
+    }
+
+    @objc private func viewTapped() {
+        delegate?.movieTapped()
     }
 }
