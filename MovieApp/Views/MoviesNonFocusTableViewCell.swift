@@ -79,19 +79,21 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
 
     private func addContraints() {
         titleLabel.snp.makeConstraints {
-            $0.leading.top.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalToSuperview().inset(30)
         }
 
         selectionView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalToSuperview().inset(12)
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.height.equalTo(30)
         }
 
         collectionView.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
+            $0.trailing.bottom.equalToSuperview()
             $0.top.equalTo(selectionView.snp.bottom).offset(25)
             $0.height.equalTo(180)
         }

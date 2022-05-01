@@ -75,7 +75,7 @@ class MovieListViewController: UIViewController {
 
         nonFocusTableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview() 
             $0.trailing.bottom.equalToSuperview()
         }
 

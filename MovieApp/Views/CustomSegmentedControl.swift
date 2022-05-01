@@ -27,11 +27,11 @@ class CustomSegmentedControl: UIView {
 
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(self.snp.height)
+            $0.height.equalToSuperview()
         }
     }
 
-    func addArrangedSubview(_ view: UIView) {
+    func addArrangedSubview(_ view: UIView) { //enum!!!
         if stackView.arrangedSubviews.count == 0 {
             let view = view as? SegmentView
             view?.reloadData(state: true)
