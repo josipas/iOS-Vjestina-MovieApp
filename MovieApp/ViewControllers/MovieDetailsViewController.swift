@@ -14,6 +14,7 @@ class MovieDetailsViewController: UIViewController {
     private var navigationBarImage: UIImage!
 
     private let networkService: NetworkingServiceProtocol = NetworkService()
+    private let networkCheck = NetworkCheck.sharedInstance()
 
     private var id: String?
 
@@ -38,9 +39,33 @@ class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        buildViews()
-        getData()
+        if networkCheck.getCurrentStatus() == .satisfied {
+            setUpNavBar()
+            buildViews()
+            getData()
+        } else {
+            self.view.backgroundColor = .white
+            setUpNavBar()
+            self.showNoInternetConnectionAlert()
+        }
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        if networkCheck.getCurrentStatus() == .unsatisfied {
+            self.showNoInternetConnectionAlert()
+        }
+    }
+
+    private func buildViews() {
+        createViews()
+        addSubviews()
+        styleViews()
+        addConstraints()
+    }
+
+    private func setUpNavBar() {
         navigationBarImageView = UIImageView()
         navigationBarImage = UIImage(named: "tmdb")
 
@@ -53,13 +78,6 @@ class MovieDetailsViewController: UIViewController {
         navigationBarImageView.image = navigationBarImage
 
         self.navigationItem.titleView = navigationBarImageView
-    }
-
-    private func buildViews() {
-        createViews()
-        addSubviews()
-        styleViews()
-        addConstraints()
     }
 
     private func createViews() {
@@ -224,6 +242,17 @@ class MovieDetailsViewController: UIViewController {
                 print(error)
             }
         }
+    }
+
+    private func showNoInternetConnectionAlert() {
+        let alert = UIAlertController(title: "No internet", message: "Please check your internet connection and try again.", preferredStyle: UIAlertController.Style.alert)
+
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { [weak self] _ in
+            guard let self = self else { return }
+
+            self.navigationController?.popViewController(animated: true)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

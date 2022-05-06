@@ -8,7 +8,6 @@ class MovieListViewController: UIViewController {
     private var focusTableView: UITableView!
     private var navigationBarImageView: UIImageView!
     private var navigationBarImage: UIImage!
-    private let networkService: NetworkingServiceProtocol = NetworkService()
 
     private var genres: [Genre] = []
     private var popularMovies: [Movie] = []
@@ -18,7 +17,7 @@ class MovieListViewController: UIViewController {
 
     private let networkCheck = NetworkCheck.sharedInstance()
     private let groups: [MovieGroup] = MovieGroup.allCases.filter { $0.description != nil }
-    private let movies = Movies.all()
+    private let networkService: NetworkingServiceProtocol = NetworkService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -190,14 +189,18 @@ class MovieListViewController: UIViewController {
         }
     }
 
+    private func pushMovieDetails(movieId: String) {
+        navigationController?.pushViewController(MovieDetailsViewController(id: movieId), animated: true)
+    }
+
     private func showNoInternetConnectionAlert() {
-        let alert = UIAlertController(title: "No internet", message: "Please check your internet connection and try again.",         preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "No internet", message: "Please check your internet connection and try again.", preferredStyle: UIAlertController.Style.alert)
 
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { _ in
 
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension MovieListViewController: SearchInFocusDelegate {
@@ -229,7 +232,7 @@ extension MovieListViewController:UITableViewDataSource {
             return 1
         }
         else {
-            return movies.count
+            return trendingMovies.count
         }
     }
 
@@ -259,7 +262,7 @@ extension MovieListViewController:UITableViewDataSource {
                 fatalError()
             }
 
-            let movie = movies[indexPath.row]
+            let movie = recommendedMovies[indexPath.row]
 
             cell.set(movie: movie)
             cell.selectionStyle = .none
@@ -278,6 +281,13 @@ extension MovieListViewController:UITableViewDataSource {
         }
         else {
             return 0
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == focusTableView {
+            let movieId = String(recommendedMovies[indexPath.row].id)
+            self.pushMovieDetails(movieId: movieId)
         }
     }
 }
@@ -329,6 +339,6 @@ extension MovieListViewController: CustomCollectionViewDelegate {
 
         guard let movieId = movieId else { return }
 
-        navigationController?.pushViewController(MovieDetailsViewController(id: movieId), animated: true)
+        self.pushMovieDetails(movieId: movieId)
     }
 }
