@@ -31,7 +31,7 @@ class CustomSegmentedControl: UIView {
         }
     }
 
-    func addArrangedSubview(_ view: UIView) { //enum!!!
+    func addArrangedSubview(_ view: UIView) {
         if stackView.arrangedSubviews.count == 0 {
             let view = view as? SegmentView
             view?.reloadData(state: true)

@@ -82,6 +82,8 @@ class OverlayImageView: UIView {
 
         dateLabel.font = .systemFont(ofSize: 14)
         dateLabel.textColor = .white
+
+        genresDurationLabel.numberOfLines = 0
     }
 
     private func addConstraints() {

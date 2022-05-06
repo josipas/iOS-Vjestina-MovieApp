@@ -1,16 +1,15 @@
 import UIKit
 import SnapKit
 
-//navigation bar - popraviti!!!!!!
-
 class MovieDetailsViewController: UIViewController {
     private var imageView: OverlayImageView!
     private var overviewLabel: UILabel!
     private var overviewDescription: UILabel!
     private var peopleCollection: UICollectionView!
     private var stackView: UIStackView!
+    private var scrollView: UIScrollView!
+    private var contentView: UIView!
     private var activityIndicatorView: UIActivityIndicatorView!
-
     private var navigationBarImageView: UIImageView!
     private var navigationBarImage: UIImage!
 
@@ -45,6 +44,11 @@ class MovieDetailsViewController: UIViewController {
         navigationBarImageView = UIImageView()
         navigationBarImage = UIImage(named: "tmdb")
 
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(hex: "#0B253F")
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.navigationController?.navigationBar.standardAppearance = appearance
+
         navigationBarImageView.frame = CGRect(x: 0, y: 0, width: 145, height: 35)
         navigationBarImageView.image = navigationBarImage
 
@@ -63,6 +67,8 @@ class MovieDetailsViewController: UIViewController {
 
         overviewLabel = UILabel()
         overviewDescription = UILabel()
+        scrollView = UIScrollView()
+        contentView = UIView()
         stackView = UIStackView()
 
         let flowLayout = UICollectionViewFlowLayout()
@@ -77,12 +83,15 @@ class MovieDetailsViewController: UIViewController {
         peopleCollection.register(TitleSubtitleCell.self, forCellWithReuseIdentifier: TitleSubtitleCell.reuseIdentifier)
         peopleCollection.delegate = self
         peopleCollection.dataSource = self
+        peopleCollection.isScrollEnabled = false
 
         imageView = OverlayImageView()
     }
 
     private func addSubviews() {
-        view.addSubview(stackView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(stackView)
         stackView.addSubview(imageView)
         stackView.addSubview(overviewLabel)
         stackView.addSubview(overviewDescription)
@@ -104,14 +113,25 @@ class MovieDetailsViewController: UIViewController {
     }
 
     private func addConstraints() {
-        stackView.snp.makeConstraints {
+        scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(scrollView.snp.width)
+        }
+
+        stackView.snp.makeConstraints {
+            $0.top.equalTo(scrollView.snp.top)
+            $0.trailing.equalTo(scrollView.snp.trailing)
+            $0.leading.equalTo(scrollView.snp.leading)
         }
 
         imageView.snp.makeConstraints {
             $0.height.equalTo(303)
             $0.trailing.leading.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(stackView.snp.top)
         }
 
         overviewLabel.snp.makeConstraints {
@@ -130,7 +150,8 @@ class MovieDetailsViewController: UIViewController {
             $0.trailing.equalToSuperview().inset(16)
             $0.leading.equalToSuperview().inset(16)
             $0.top.equalTo(overviewDescription.snp.bottom).offset(22)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalTo(scrollView.snp.bottom).offset(-20)
+            $0.height.equalTo(100)
         }
 
         activityIndicatorView.snp.makeConstraints {
@@ -203,7 +224,6 @@ class MovieDetailsViewController: UIViewController {
                 print(error)
             }
         }
-
     }
 }
 

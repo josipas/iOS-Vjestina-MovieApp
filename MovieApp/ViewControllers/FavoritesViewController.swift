@@ -1,5 +1,6 @@
 import UIKit
 
+
 class FavoritesViewController: UIViewController {
     private var navigationBarImageView: UIImageView!
     private var navigationBarImage: UIImage!
@@ -9,6 +10,10 @@ class FavoritesViewController: UIViewController {
 
         view.backgroundColor = .white
 
+        setUpNavBar()
+    }
+
+    private func setUpNavBar() {
         navigationBarImageView = UIImageView()
         navigationBarImage = UIImage(named: "tmdb")
 
@@ -20,5 +25,8 @@ class FavoritesViewController: UIViewController {
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
 
         self.navigationItem.titleView = navigationBarImageView
+
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", image: nil, primaryAction: nil, menu: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = .white
     }
 }

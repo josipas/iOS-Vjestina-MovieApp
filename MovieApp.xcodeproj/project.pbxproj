@@ -39,6 +39,7 @@
 		5291C13E281ECB1200AEC866 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5291C13D281ECB1200AEC866 /* FavoritesViewController.swift */; };
 		52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */; };
 		52D6FDBF27F1CFBF007CD74A /* OverlayImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */; };
+		52FD4F7528253875002B2CE6 /* NetworkCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FD4F7428253875002B2CE6 /* NetworkCheck.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,7 @@
 		5291C13D281ECB1200AEC866 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageBackgroundView.swift; sourceTree = "<group>"; };
 		52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayImageView.swift; sourceTree = "<group>"; };
+		52FD4F7428253875002B2CE6 /* NetworkCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCheck.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				520AF67E282437E4004551B4 /* NetworkingServiceProtocol.swift */,
 				520AF680282437F3004551B4 /* NetworkService.swift */,
 				520AF6832824396B004551B4 /* RequestError.swift */,
+				52FD4F7428253875002B2CE6 /* NetworkCheck.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				520AF69528252724004551B4 /* GenreResponse.swift in Sources */,
 				520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */,
 				521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */,
+				52FD4F7528253875002B2CE6 /* NetworkCheck.swift in Sources */,
 				5291C13E281ECB1200AEC866 /* FavoritesViewController.swift in Sources */,
 				52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */,
 				520AF68B2824586E004551B4 /* MovieDetails.swift in Sources */,

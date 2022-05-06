@@ -16,14 +16,23 @@ class MovieListViewController: UIViewController {
     private var topRatedMovies: [Movie] = []
     private var recommendedMovies: [Movie] = []
 
+    private let networkCheck = NetworkCheck.sharedInstance()
     private let groups: [MovieGroup] = MovieGroup.allCases.filter { $0.description != nil }
     private let movies = Movies.all()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        getData()
-        buildViews()
+        if networkCheck.getCurrentStatus() == .satisfied {
+            setUpNavBar()
+            getData()
+            buildViews()
+
+        } else {
+            self.view.backgroundColor = .white
+            setUpNavBar()
+            self.showNoInternetConnectionAlert()
+        }
     }
 
     private func getData() {
@@ -52,9 +61,6 @@ class MovieListViewController: UIViewController {
         focusTableView = UITableView()
         focusTableView.delegate = self
         focusTableView.dataSource = self
-
-        navigationBarImageView = UIImageView()
-        navigationBarImage = UIImage(named: "tmdb")
     }
 
     private func addSubviews() {
@@ -72,18 +78,6 @@ class MovieListViewController: UIViewController {
         focusTableView.register(MoviesFocusTableViewCell.self, forCellReuseIdentifier: MoviesFocusTableViewCell.reuseIdentifier)
         focusTableView.separatorStyle = .none
         focusTableView.isHidden = true
-
-        navigationBarImageView.frame = CGRect(x: 0, y: 0, width: 145, height: 35)
-        navigationBarImageView.image = navigationBarImage
-
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = UIColor(hex: "#0B253F")
-        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
-
-        self.navigationItem.titleView = navigationBarImageView
-
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", image: nil, primaryAction: nil, menu: nil)
-        self.navigationItem.backBarButtonItem?.tintColor = .white
     }
 
     private func addConstraints() {
@@ -104,6 +98,23 @@ class MovieListViewController: UIViewController {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+    }
+
+    private func setUpNavBar() {
+        navigationBarImageView = UIImageView()
+        navigationBarImage = UIImage(named: "tmdb")
+
+        navigationBarImageView.frame = CGRect(x: 0, y: 0, width: 145, height: 35)
+        navigationBarImageView.image = navigationBarImage
+
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(hex: "#0B253F")
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
+        self.navigationItem.titleView = navigationBarImageView
+
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", image: nil, primaryAction: nil, menu: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = .white
     }
 
     private func getGenres() {
@@ -178,6 +189,15 @@ class MovieListViewController: UIViewController {
             }
         }
     }
+
+    private func showNoInternetConnectionAlert() {
+        let alert = UIAlertController(title: "No internet", message: "Please check your internet connection and try again.",         preferredStyle: UIAlertController.Style.alert)
+
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { _ in
+
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
 }
 
 extension MovieListViewController: SearchInFocusDelegate {
