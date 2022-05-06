@@ -1,16 +1,7 @@
 import UIKit
 import SnapKit
 
-//napraviti strrukturu, predati u init
-
 class OverlayImageView: UIView {
-    private var title: String?
-    private var date: String?
-    private var genres: String?
-    private var duration: String?
-    private var year: String?
-    private var backgroundImage: UIImage!
-
     private var backgroundImageView: UIImageView!
     private var overlay: UIView!
     private var userScoreStack: UIStackView!
@@ -21,19 +12,22 @@ class OverlayImageView: UIView {
     private var genresDurationLabel: UILabel!
     private var roundImageView: RoundImageBackgroundView!
 
-    init(imageTitle: String, title: String, year: String, date: String, genres: String, duration: String) {
+    init() {
         super.init(frame: .zero)
-        backgroundImage = UIImage(named: imageTitle)
-        self.year = year
-        self.title = title
-        self.date = date
-        self.genres = genres
-        self.duration = duration
         buildViews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    public func set(data: OverlayImageViewData) {
+        backgroundImageView.load(imageUrl: data.imageTitle)
+        titleYearLabel.attributedText = NSMutableAttributedString.getAPartialBoldAttributedString(fromString: "\(data.title) \(data.year)",withSubstring: "\(data.title)", forSize: 24, color: .white)
+
+        dateLabel.text = data.date
+
+        genresDurationLabel.attributedText = NSMutableAttributedString.getAPartialBoldAttributedString(fromString:"\(data.genres)  \(data.duration)",withSubstring: "\(data.duration)", forSize: 14, color: .white)
     }
 
     private func buildViews() {
@@ -44,7 +38,7 @@ class OverlayImageView: UIView {
     }
 
     private func createViews() {
-        backgroundImageView = UIImageView(image: backgroundImage)
+        backgroundImageView = UIImageView()
         roundImageView = RoundImageBackgroundView(imageTitle: "star", hexColor: "#757575", size: 14)
         overlay = UIView()
         dateLabel = UILabel()
@@ -86,23 +80,8 @@ class OverlayImageView: UIView {
         userScoreStack.distribution = .fill
         userScoreStack.spacing = 8
 
-        if
-            let title = title,
-            let year = year
-        {
-            titleYearLabel.attributedText = NSMutableAttributedString.getAPartialBoldAttributedString(fromString: "\(title) \(year)",withSubstring: "\(title)", forSize: 24, color: .white)
-        }
-
-        dateLabel.text = date
         dateLabel.font = .systemFont(ofSize: 14)
         dateLabel.textColor = .white
-
-        if
-            let genres = genres,
-            let duration = duration
-        {
-            genresDurationLabel.attributedText = NSMutableAttributedString.getAPartialBoldAttributedString(fromString:"\(genres)  \(duration)",withSubstring: "\(duration)", forSize: 14, color: .white)
-        }
     }
 
     private func addConstraints() {

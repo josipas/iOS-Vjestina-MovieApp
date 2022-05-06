@@ -5,6 +5,7 @@ extension UIImageView {
         let url = URL(string: imageUrl)
 
         guard let url = url else {
+            self.backgroundColor = UIColor(hex: "#EAEAEB")
             return
         }
 

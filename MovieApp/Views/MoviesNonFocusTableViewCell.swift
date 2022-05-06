@@ -1,9 +1,10 @@
 import UIKit
 import MovieAppData
 
-protocol CustomCollectionViewDelegate: TappedMovieDelegate {
+protocol CustomCollectionViewDelegate: AnyObject {
     func getMoviesCount(group: MovieGroup) -> Int
     func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String
+    func didTapMovie(group: MovieGroup, indexPath: IndexPath)
 }
 
 class MoviesNonFocusTableViewCell: UITableViewCell {
@@ -34,11 +35,11 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
         self.group = nil
     }
 
-    func set(group: MovieGroup) {
+    func set(genres: [Genre], group: MovieGroup) {
         titleLabel.text = group.description
         self.group = group
-        group.filters.forEach({ filter in
-            let view = SegmentView(title: filter.description)
+        genres.forEach({ genre in
+            let view = SegmentView(title: genre.name)
             view.delegate = self
             selectionView.addArrangedSubview(view)
         })
@@ -101,7 +102,10 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
 }
 
 extension MoviesNonFocusTableViewCell: UICollectionViewDelegate {
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let group = group else { return }
+        delegate?.didTapMovie(group: group, indexPath: indexPath)
+    }
 }
 
 extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
@@ -126,7 +130,6 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
             let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath, group: group)
         {
             cell.set(imageUrl: imageUrl)
-            cell.delegate = delegate
         }
 
         return cell
@@ -156,5 +159,3 @@ extension UITableViewCell {
         sendSubviewToBack(contentView)
     }
 }
-
-

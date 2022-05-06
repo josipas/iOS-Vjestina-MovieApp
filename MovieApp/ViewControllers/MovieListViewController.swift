@@ -8,27 +8,30 @@ class MovieListViewController: UIViewController {
     private var focusTableView: UITableView!
     private var navigationBarImageView: UIImageView!
     private var navigationBarImage: UIImage!
+    private let networkService: NetworkingServiceProtocol = NetworkService()
+
+    private var genres: [Genre] = []
+    private var popularMovies: [Movie] = []
+    private var trendingMovies: [Movie] = []
+    private var topRatedMovies: [Movie] = []
+    private var recommendedMovies: [Movie] = []
 
     private let groups: [MovieGroup] = MovieGroup.allCases.filter { $0.description != nil }
     private let movies = Movies.all()
-    private let filteredMovies: [MovieGroup: [MovieModel]] = { () -> [MovieGroup: [MovieModel]] in
-        var dict = [MovieGroup: [MovieModel]]()
-
-        for group in MovieGroup.allCases {
-            dict[group] = Movies.all().filter { movie in
-                movie.group.contains {
-                    $0 == group
-                }
-            }
-        }
-
-        return dict
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        getData()
         buildViews()
+    }
+
+    private func getData() {
+        getGenres()
+        getMovies(group: .popular)
+        getMovies(group: .trending)
+        getMovies(group: .topRated)
+        getMovies(group: .recommended)
     }
 
     private func buildViews() {
@@ -92,7 +95,7 @@ class MovieListViewController: UIViewController {
 
         nonFocusTableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom).offset(20)
-            $0.leading.equalToSuperview() 
+            $0.leading.equalToSuperview()
             $0.trailing.bottom.equalToSuperview()
         }
 
@@ -100,6 +103,79 @@ class MovieListViewController: UIViewController {
             $0.top.equalTo(searchBar.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
+        }
+    }
+
+    private func getGenres() {
+        var endpoint = URLComponents()
+
+        endpoint.scheme = Constants.baseScheme
+        endpoint.host = Constants.baseHost
+        endpoint.path = "/3/genre/movie/list"
+        endpoint.queryItems = [URLQueryItem(name: "api_key", value: Constants.apiKey)]
+
+        guard
+            let endpoint = endpoint.string,
+            let url = URL(string: endpoint)
+        else {
+            return
+        }
+
+        networkService.getGenres(URLRequest(url: url)) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let genres):
+                self.genres = genres
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
+    private func getMovies(group: MovieGroup) {
+        var endpoint = URLComponents()
+
+        endpoint.scheme = Constants.baseScheme
+        endpoint.host = Constants.baseHost
+        switch group {
+        case .popular:
+            endpoint.path = "/3/movie/popular"
+        case .trending:
+            endpoint.path = "/3/trending/movie/day"
+        case .topRated:
+            endpoint.path = "/3/movie/top_rated"
+        case .recommended:
+            endpoint.path = "/3/movie/103/recommendations"
+        }
+
+        endpoint.queryItems = [URLQueryItem(name: "language", value: "en-US"), URLQueryItem(name: "page", value: "1"), URLQueryItem(name: "api_key", value: Constants.apiKey)]
+
+        guard
+            let endpoint = endpoint.string,
+            let url = URL(string: endpoint)
+        else {
+            return
+        }
+
+        networkService.getMovies(URLRequest(url: url)) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let value):
+                switch group {
+                case .popular:
+                    self.popularMovies = value
+                case .trending:
+                    self.trendingMovies = value
+                case .topRated:
+                    self.topRatedMovies = value
+                case .recommended:
+                    self.recommendedMovies = value
+                }
+            }
         }
     }
 }
@@ -149,7 +225,7 @@ extension MovieListViewController:UITableViewDataSource {
             }
 
             cell.delegate = self
-            cell.set(group: groups[indexPath.section])
+            cell.set(genres: genres, group: groups[indexPath.section])
             cell.selectionStyle = .none
 
             return cell
@@ -165,7 +241,6 @@ extension MovieListViewController:UITableViewDataSource {
 
             let movie = movies[indexPath.row]
 
-            cell.delegate = self
             cell.set(movie: movie)
             cell.selectionStyle = .none
 
@@ -189,18 +264,51 @@ extension MovieListViewController:UITableViewDataSource {
 
 extension MovieListViewController: CustomCollectionViewDelegate {
     func getMoviesCount(group: MovieGroup) -> Int {
-        return filteredMovies[group]?.count ?? 0
+        switch group {
+        case .popular:
+            return popularMovies.count
+        case .trending:
+            return trendingMovies.count
+        case .topRated:
+            return topRatedMovies.count
+        case .recommended:
+            return recommendedMovies.count
+        }
     }
 
     func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String {
-        return filteredMovies[group]?[indexPath.row].imageUrl ?? ""
+        switch group {
+        case .popular:
+            guard let posterPath = popularMovies[indexPath.row].posterPath else { return ""}
+            return "\(Constants.baseUrlForImages)\(posterPath)"
+        case .trending:
+            guard let posterPath = trendingMovies[indexPath.row].posterPath else { return ""}
+            return "\(Constants.baseUrlForImages)\(posterPath)"
+        case .topRated:
+            guard let posterPath = topRatedMovies[indexPath.row].posterPath else { return ""}
+            return "\(Constants.baseUrlForImages)\(posterPath)"
+        case .recommended:
+            guard let posterPath = recommendedMovies[indexPath.row].posterPath else { return ""}
+            return "\(Constants.baseUrlForImages)\(posterPath)"
+        }
     }
 
-    
-}
+    func didTapMovie(group: MovieGroup, indexPath: IndexPath) {
+        var movieId: String? = nil
 
-extension MovieListViewController: TappedMovieDelegate {
-    func movieTapped() {
-        self.navigationController?.pushViewController(MovieDetailsViewController(), animated: true)
+        switch group {
+        case .popular:
+            movieId = String(popularMovies[indexPath.row].id)
+        case .trending:
+            movieId = String(trendingMovies[indexPath.row].id)
+        case .topRated:
+            movieId = String(topRatedMovies[indexPath.row].id)
+        case .recommended:
+            movieId = String(recommendedMovies[indexPath.row].id)
+        }
+
+        guard let movieId = movieId else { return }
+
+        navigationController?.pushViewController(MovieDetailsViewController(id: movieId), animated: true)
     }
 }

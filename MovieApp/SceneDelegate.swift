@@ -12,19 +12,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         window = UIWindow(windowScene: windowScene)
-        let initialViewController = createTabBar()
-        window?.rootViewController = initialViewController
+        window?.rootViewController = createTabBar()
         window?.makeKeyAndVisible()
     }
 
     func createTabBar() -> UITabBarController {
-        let tabBar = UITabBarController()
+        let tabBarController = UITabBarController()
 
-        UITabBar.appearance().backgroundColor = .white
-        tabBar.tabBar.tintColor = UIColor(hex: "#0B253F")
-        tabBar.viewControllers = [createMovieListNavigationController(), createFavoritesNavigationController()]
+        setUpTabBar(tabBarController: tabBarController)
 
-        return tabBar
+        tabBarController.viewControllers = [createMovieListNavigationController(), createFavoritesNavigationController()]
+
+        return tabBarController
     }
 
     func createMovieListNavigationController() -> UINavigationController {
@@ -43,12 +42,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return UINavigationController(rootViewController: favoritesViewController)
     }
 
-    func setUpNavigationBar(view: UINavigationController) {
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = UIColor(hex: "#0B253F")
-
-        view.navigationBar.scrollEdgeAppearance = appearance
-        view.navigationItem.titleView = UIImageView(image: UIImage(named: "tmdb"))
+    func setUpTabBar(tabBarController: UITabBarController) {
+        UITabBar.appearance().backgroundColor = .white
+        tabBarController.tabBar.tintColor = UIColor(hex: "#0B253F")
+        tabBarController.tabBar.layer.shadowOffset = CGSize(width: 0, height: 0)
+        tabBarController.tabBar.layer.shadowRadius = 4.0
+        tabBarController.tabBar.layer.shadowColor = UIColor.lightGray.cgColor
+        tabBarController.tabBar.layer.shadowOpacity = 0.3
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
