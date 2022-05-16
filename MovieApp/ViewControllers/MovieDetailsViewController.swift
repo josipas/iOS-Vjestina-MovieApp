@@ -13,8 +13,8 @@ class MovieDetailsViewController: UIViewController {
     private var navigationBarImageView: UIImageView!
     private var navigationBarImage: UIImage!
 
-    private let networkService: NetworkingServiceProtocol = NetworkService()
-    private let networkCheck = NetworkCheck.sharedInstance()
+    private let apiService: ApiServiceProtocol = ApiService()
+    private let networkMonitor = NetworkMonitor()
 
     private var id: String?
 
@@ -39,23 +39,19 @@ class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if networkCheck.getCurrentStatus() == .satisfied {
-            setUpNavBar()
-            buildViews()
-            getData()
-        } else {
-            self.view.backgroundColor = .white
-            setUpNavBar()
-            self.showNoInternetConnectionAlert()
-        }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-        if networkCheck.getCurrentStatus() == .unsatisfied {
-            self.showNoInternetConnectionAlert()
-        }
+        networkMonitor.startMonitoring(connected: {
+            DispatchQueue.main.async {
+                self.setUpNavBar()
+                self.buildViews()
+                self.getData()
+            }
+        }, unconnected: {
+            DispatchQueue.main.async {
+                self.setUpNavBar()
+                self.buildViews()
+                self.showNoInternetConnectionAlert()
+            }
+        })
     }
 
     private func buildViews() {
@@ -118,6 +114,7 @@ class MovieDetailsViewController: UIViewController {
     }
 
     private func styleViews() {
+        overrideUserInterfaceStyle = .light
         view.backgroundColor = .white
 
         stackView.axis = .vertical
@@ -213,22 +210,7 @@ class MovieDetailsViewController: UIViewController {
         activityIndicatorView.startAnimating()
         guard let id = id else { return }
 
-        var endpoint = URLComponents()
-
-        endpoint.scheme = Constants.baseScheme
-        endpoint.host = Constants.baseHost
-        endpoint.path = "/3/movie/\(id)"
-
-        endpoint.queryItems = [URLQueryItem(name: "api_key", value: Constants.apiKey)]
-
-        guard
-            let endpoint = endpoint.string,
-            let url = URL(string: endpoint)
-        else {
-            return
-        }
-
-        networkService.getMovieDetails(URLRequest(url: url)) { [weak self] result in
+        ApiService().getDetails(id: id, completionHandler: { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -241,7 +223,7 @@ class MovieDetailsViewController: UIViewController {
             case .failure(let error):
                 print(error)
             }
-        }
+        })
     }
 
     private func showNoInternetConnectionAlert() {

@@ -21,6 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         setUpTabBar(tabBarController: tabBarController)
 
+        //coordinatoru se u initu predaje navigation od prvoga!!!!!!!!!!
         tabBarController.viewControllers = [createMovieListNavigationController(), createFavoritesNavigationController()]
 
         return tabBarController

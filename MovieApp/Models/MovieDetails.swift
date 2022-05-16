@@ -1,4 +1,4 @@
-struct MovieDetails: Codable {
+struct MovieDetails {
     let genres: [Genre]
     let overview: String?
     let posterPath: String?

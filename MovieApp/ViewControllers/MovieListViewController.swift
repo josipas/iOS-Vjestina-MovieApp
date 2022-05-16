@@ -15,31 +15,75 @@ class MovieListViewController: UIViewController {
     private var topRatedMovies: [Movie] = []
     private var recommendedMovies: [Movie] = []
 
-    private let networkCheck = NetworkCheck.sharedInstance()
+    private let networkMonitor = NetworkMonitor()
     private let groups: [MovieGroup] = MovieGroup.allCases.filter { $0.description != nil }
-    private let networkService: NetworkingServiceProtocol = NetworkService()
+    private let apiService: ApiServiceProtocol = ApiService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if networkCheck.getCurrentStatus() == .satisfied {
-            setUpNavBar()
-            getData()
-            buildViews()
-
-        } else {
-            self.view.backgroundColor = .white
-            setUpNavBar()
-            self.showNoInternetConnectionAlert()
-        }
+        networkMonitor.startMonitoring(connected: {
+            DispatchQueue.main.async {
+                self.setUpNavBar()
+                self.buildViews()
+                self.getData()
+            }
+        }, unconnected: {
+            DispatchQueue.main.async {
+                self.buildViews()
+                self.setUpNavBar()
+                self.showNoInternetConnectionAlert()
+            }
+        })
     }
 
     private func getData() {
-        getGenres()
-        getMovies(group: .popular)
-        getMovies(group: .trending)
-        getMovies(group: .topRated)
-        getMovies(group: .recommended)
+        apiService.getGenres { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let genres):
+                self.genres = genres
+                DispatchQueue.main.async {
+                    self.nonFocusTableView.reloadData()
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+
+        apiService.getMovies(completionHandlerMovies: { [weak self] result, group in
+            guard let self = self else { return }
+
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let value):
+                switch group {
+                case .popular:
+                    self.popularMovies = value
+                    DispatchQueue.main.async {
+                        self.nonFocusTableView.reloadData()
+                    }
+                case .trending:
+                    self.trendingMovies = value
+                    DispatchQueue.main.async {
+                        self.nonFocusTableView.reloadData()
+                        self.focusTableView.reloadData()
+                    }
+                case .topRated:
+                    self.topRatedMovies = value
+                    DispatchQueue.main.async {
+                        self.nonFocusTableView.reloadData()
+                    }
+                case .recommended:
+                    self.recommendedMovies = value
+                    DispatchQueue.main.async {
+                        self.nonFocusTableView.reloadData()
+                    }
+                }
+            }
+        })
     }
 
     private func buildViews() {
@@ -70,6 +114,7 @@ class MovieListViewController: UIViewController {
 
     private func styleViews() {
         view.backgroundColor = .white
+        overrideUserInterfaceStyle = .light
 
         nonFocusTableView.register(MoviesNonFocusTableViewCell.self, forCellReuseIdentifier: MoviesNonFocusTableViewCell.reuseIdentifier)
         nonFocusTableView.separatorStyle = .none
@@ -85,7 +130,7 @@ class MovieListViewController: UIViewController {
             $0.height.equalTo(45)
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(22)
         }
-
+        
         nonFocusTableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom).offset(20)
             $0.leading.equalToSuperview()
@@ -114,79 +159,6 @@ class MovieListViewController: UIViewController {
 
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", image: nil, primaryAction: nil, menu: nil)
         self.navigationItem.backBarButtonItem?.tintColor = .white
-    }
-
-    private func getGenres() {
-        var endpoint = URLComponents()
-
-        endpoint.scheme = Constants.baseScheme
-        endpoint.host = Constants.baseHost
-        endpoint.path = "/3/genre/movie/list"
-        endpoint.queryItems = [URLQueryItem(name: "api_key", value: Constants.apiKey)]
-
-        guard
-            let endpoint = endpoint.string,
-            let url = URL(string: endpoint)
-        else {
-            return
-        }
-
-        networkService.getGenres(URLRequest(url: url)) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let genres):
-                self.genres = genres
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-
-    private func getMovies(group: MovieGroup) {
-        var endpoint = URLComponents()
-
-        endpoint.scheme = Constants.baseScheme
-        endpoint.host = Constants.baseHost
-        switch group {
-        case .popular:
-            endpoint.path = "/3/movie/popular"
-        case .trending:
-            endpoint.path = "/3/trending/movie/day"
-        case .topRated:
-            endpoint.path = "/3/movie/top_rated"
-        case .recommended:
-            endpoint.path = "/3/movie/103/recommendations"
-        }
-
-        endpoint.queryItems = [URLQueryItem(name: "language", value: "en-US"), URLQueryItem(name: "page", value: "1"), URLQueryItem(name: "api_key", value: Constants.apiKey)]
-
-        guard
-            let endpoint = endpoint.string,
-            let url = URL(string: endpoint)
-        else {
-            return
-        }
-
-        networkService.getMovies(URLRequest(url: url)) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .failure(let error):
-                print(error)
-            case .success(let value):
-                switch group {
-                case .popular:
-                    self.popularMovies = value
-                case .trending:
-                    self.trendingMovies = value
-                case .topRated:
-                    self.topRatedMovies = value
-                case .recommended:
-                    self.recommendedMovies = value
-                }
-            }
-        }
     }
 
     private func pushMovieDetails(movieId: String) {
@@ -220,7 +192,7 @@ extension MovieListViewController: UITableViewDelegate {
 
 }
 
-extension MovieListViewController:UITableViewDataSource {
+extension MovieListViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         guard tableView == nonFocusTableView else { return 1 }
 
@@ -262,7 +234,7 @@ extension MovieListViewController:UITableViewDataSource {
                 fatalError()
             }
 
-            let movie = recommendedMovies[indexPath.row]
+            let movie = trendingMovies[indexPath.row]
 
             cell.set(movie: movie)
             cell.selectionStyle = .none
@@ -286,7 +258,7 @@ extension MovieListViewController:UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == focusTableView {
-            let movieId = String(recommendedMovies[indexPath.row].id)
+            let movieId = String(trendingMovies[indexPath.row].id)
             self.pushMovieDetails(movieId: movieId)
         }
     }

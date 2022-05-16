@@ -43,6 +43,7 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
             view.delegate = self
             selectionView.addArrangedSubview(view)
         })
+        collectionView.reloadData()
     }
 
     private func buildViews() {

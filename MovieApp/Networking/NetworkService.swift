@@ -1,30 +1,32 @@
 import Foundation
 
+//modeli ne tribaju biti codable i generički s jednom klasom
+
 class NetworkService: NetworkingServiceProtocol {
-    func getMovies(_ request: URLRequest, completionHandler: @escaping ((Result<[Movie], RequestError>) -> Void)) {
+    func getMovies(_ request: URLRequest, group: MovieGroup, completionHandler: @escaping ((Result<[Movie], RequestError>, MovieGroup) -> Void)) {
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, err in
 
             guard err == nil else {
-                completionHandler(.failure(.clientError))
+                completionHandler(.failure(.clientError), group)
                 return
             }
 
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
-                      completionHandler(.failure(.serverError))
+                      completionHandler(.failure(.serverError), group)
                       return
                   }
             guard let data = data else {
-                completionHandler(.failure(.noDataError))
+                completionHandler(.failure(.noDataError), group)
                 return
             }
 
             guard let value = try? JSONDecoder().decode(MovieResponse.self, from: data)
             else {
-                completionHandler(.failure(.dataDecodingError))
+                completionHandler(.failure(.dataDecodingError), group)
                 return
             }
-            completionHandler(.success(value.results))
+            completionHandler(.success(value.results), group)
         }
         dataTask.resume()
     }

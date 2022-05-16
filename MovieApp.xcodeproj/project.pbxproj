@@ -37,9 +37,11 @@
 		521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521780462801C67500A66BD7 /* CustomSegmentedControl.swift */; };
 		5217804B2801DC4700A66BD7 /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5217804A2801DC4700A66BD7 /* SegmentView.swift */; };
 		5291C13E281ECB1200AEC866 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5291C13D281ECB1200AEC866 /* FavoritesViewController.swift */; };
+		52BCD94A2832BC14007CE3EE /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BCD9492832BC14007CE3EE /* ApiService.swift */; };
+		52BCD94C2832C87E007CE3EE /* ApiServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BCD94B2832C87E007CE3EE /* ApiServiceProtocol.swift */; };
 		52D6FDBD27F1CEBA007CD74A /* RoundImageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */; };
 		52D6FDBF27F1CFBF007CD74A /* OverlayImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */; };
-		52FD4F7528253875002B2CE6 /* NetworkCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FD4F7428253875002B2CE6 /* NetworkCheck.swift */; };
+		52FD4F7528253875002B2CE6 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FD4F7428253875002B2CE6 /* NetworkMonitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,9 +75,11 @@
 		521780462801C67500A66BD7 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		5217804A2801DC4700A66BD7 /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
 		5291C13D281ECB1200AEC866 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		52BCD9492832BC14007CE3EE /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		52BCD94B2832C87E007CE3EE /* ApiServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiServiceProtocol.swift; sourceTree = "<group>"; };
 		52D6FDBC27F1CEBA007CD74A /* RoundImageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageBackgroundView.swift; sourceTree = "<group>"; };
 		52D6FDBE27F1CFBF007CD74A /* OverlayImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayImageView.swift; sourceTree = "<group>"; };
-		52FD4F7428253875002B2CE6 /* NetworkCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCheck.swift; sourceTree = "<group>"; };
+		52FD4F7428253875002B2CE6 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +101,7 @@
 				520AF67E282437E4004551B4 /* NetworkingServiceProtocol.swift */,
 				520AF680282437F3004551B4 /* NetworkService.swift */,
 				520AF6832824396B004551B4 /* RequestError.swift */,
-				52FD4F7428253875002B2CE6 /* NetworkCheck.swift */,
+				52FD4F7428253875002B2CE6 /* NetworkMonitor.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -112,6 +116,8 @@
 				520AF69428252724004551B4 /* GenreResponse.swift */,
 				520AF68C282458B5004551B4 /* Genre.swift */,
 				520AF69828252AA4004551B4 /* OverlayImageViewData.swift */,
+				52BCD9492832BC14007CE3EE /* ApiService.swift */,
+				52BCD94B2832C87E007CE3EE /* ApiServiceProtocol.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -282,11 +288,12 @@
 				520AF69528252724004551B4 /* GenreResponse.swift in Sources */,
 				520E16172800B03C00001999 /* UIColor+Extensions.swift in Sources */,
 				521780472801C67500A66BD7 /* CustomSegmentedControl.swift in Sources */,
-				52FD4F7528253875002B2CE6 /* NetworkCheck.swift in Sources */,
+				52FD4F7528253875002B2CE6 /* NetworkMonitor.swift in Sources */,
 				5291C13E281ECB1200AEC866 /* FavoritesViewController.swift in Sources */,
 				52178043280173B300A66BD7 /* MoviePictureCollectionViewCell.swift in Sources */,
 				520AF68B2824586E004551B4 /* MovieDetails.swift in Sources */,
 				520AF69328252706004551B4 /* MovieResponse.swift in Sources */,
+				52BCD94C2832C87E007CE3EE /* ApiServiceProtocol.swift in Sources */,
 				520AF68928244E89004551B4 /* MovieGroup.swift in Sources */,
 				520E16192800B5B600001999 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				520AF681282437F3004551B4 /* NetworkService.swift in Sources */,
@@ -297,6 +304,7 @@
 				520F9BB327F0CAF700605244 /* SceneDelegate.swift in Sources */,
 				520AF6972825277A004551B4 /* MovieDetailsResponse.swift in Sources */,
 				520E161B2800C6B200001999 /* MovieListViewController.swift in Sources */,
+				52BCD94A2832BC14007CE3EE /* ApiService.swift in Sources */,
 				520F9BC927F0F58100605244 /* TitleSubtitleCell.swift in Sources */,
 				5217804B2801DC4700A66BD7 /* SegmentView.swift in Sources */,
 				520BFA462803537F0016E12F /* UIImageView+Extensions.swift in Sources */,
@@ -430,6 +438,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UH2DGFY867;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -456,6 +465,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UH2DGFY867;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
