@@ -1,7 +1,5 @@
 import Foundation
 
-//modeli ne tribaju biti codable i generički s jednom klasom
-
 class NetworkService: NetworkingServiceProtocol {
     func getMovies(_ request: URLRequest, group: MovieGroup, completionHandler: @escaping ((Result<[Movie], RequestError>, MovieGroup) -> Void)) {
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, err in

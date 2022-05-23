@@ -38,6 +38,7 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
     private func createViews() {
         imageView = UIImageView()
         heartView = RoundImageBackgroundView(imageTitle: "heart", hexColor: "#0B253F", size: 18)
+        //heartView.delegate = self
     }
 
     private func addSubviews() {
