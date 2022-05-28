@@ -18,7 +18,17 @@ class MovieListViewController: UIViewController {
 
     private let networkMonitor = NetworkMonitor()
     private let groups: [MovieGroupConst] = MovieGroupConst.allCases.filter { $0.description != nil }
-    private let movieRepository = MovieRepository()
+    private var movieRepository: MovieRepository!
+
+    init(movieRepository: MovieRepository) {
+        super.init(nibName: nil, bundle: nil)
+
+        self.movieRepository = movieRepository
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,20 +37,26 @@ class MovieListViewController: UIViewController {
             DispatchQueue.main.async {
                 self.setUpNavBar()
                 self.buildViews()
-                self.getData()
+                self.getDataFromDatabase()
+                self.updateDatabase()
             }
         }, unconnected: {
             DispatchQueue.main.async {
                 self.buildViews()
                 self.setUpNavBar()
+                self.getDataFromDatabase()
                 self.showNoInternetConnectionAlert()
             }
         })
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
+        getDataFromDatabase()
+    }
+
+    private func getDataFromDatabase() {
         popularMovies = movieRepository.fetchMoviesFromDatabase(inMovieGroup: .popular)
 
         trendingMovies = movieRepository.fetchMoviesFromDatabase(inMovieGroup: .trending)
@@ -54,10 +70,9 @@ class MovieListViewController: UIViewController {
         DispatchQueue.main.async {
             self.nonFocusTableView.reloadData()
         }
-
     }
 
-    private func getData() {
+    private func updateDatabase() {
         movieRepository.saveGroupsToDatabase(groups: groups)
 
         movieRepository.getGenresFromNetwork { [weak self] result in
@@ -65,8 +80,12 @@ class MovieListViewController: UIViewController {
 
             switch result {
             case .success(let genres):
-                self.movieRepository.saveGenresToDatabase(genres: genres)
+                DispatchQueue.main.async {
+                    self.movieRepository.saveGenresToDatabase(genres: genres)
+                    self.genres = self.movieRepository.fetchGenresFromDatabase()
+                }
 
+                print("success žanrovi")
             case .failure(let error):
                 print(error)
             }
@@ -79,19 +98,37 @@ class MovieListViewController: UIViewController {
             case .failure(let error):
                 print(error)
             case .success(let value):
+                print("success filmovi")
+
                 switch group {
                 case .popular:
-                    self.movieRepository.saveMoviesToDatabase(movies: value, group: .popular)
+                    DispatchQueue.main.async {
+                        self.movieRepository.saveMoviesToDatabase(movies: value, group: .popular)
+                        self.popularMovies = self.movieRepository.fetchMoviesFromDatabase(inMovieGroup: .popular)
+                    }
 
                 case .trending:
-                    self.movieRepository.saveMoviesToDatabase(movies: value, group: .trending)
+                    DispatchQueue.main.async {
+                        self.movieRepository.saveMoviesToDatabase(movies: value, group: .trending)
+                        self.trendingMovies = self.movieRepository.fetchMoviesFromDatabase(inMovieGroup: .trending)
+                    }
 
                 case .topRated:
-                    self.movieRepository.saveMoviesToDatabase(movies: value, group: .topRated)
+                    DispatchQueue.main.async {
+                        self.movieRepository.saveMoviesToDatabase(movies: value, group: .topRated)
+                        self.topRatedMovies = self.movieRepository.fetchMoviesFromDatabase(inMovieGroup: .topRated)
+                    }
 
                 case .recommended:
-                    self.movieRepository.saveMoviesToDatabase(movies: value, group: .recommended)
+                    DispatchQueue.main.async {
+                        self.movieRepository.saveMoviesToDatabase(movies: value, group: .recommended)
+                        self.recommendedMovies = self.movieRepository.fetchMoviesFromDatabase(inMovieGroup: .recommended)
+                    }
                 }
+            }
+
+            DispatchQueue.main.async {
+                self.nonFocusTableView.reloadData()
             }
         }
     }
@@ -140,7 +177,7 @@ class MovieListViewController: UIViewController {
             $0.height.equalTo(45)
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(22)
         }
-        
+
         nonFocusTableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom).offset(20)
             $0.leading.equalToSuperview()
@@ -172,7 +209,7 @@ class MovieListViewController: UIViewController {
     }
 
     private func pushMovieDetails(movieId: String) {
-        navigationController?.pushViewController(MovieDetailsViewController(id: movieId), animated: true)
+        navigationController?.pushViewController(MovieDetailsViewController(id: movieId, movieRepository: movieRepository), animated: true)
     }
 
     private func showNoInternetConnectionAlert() {

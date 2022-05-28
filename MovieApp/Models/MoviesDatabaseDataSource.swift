@@ -2,14 +2,13 @@ import CoreData
 import UIKit
 
 class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
+    private let managedContext: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.managedContext = context
+    }
+
     func saveGroups(groups: [MovieGroupConst]) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         let fetch: NSFetchRequest<MovieGroup> = MovieGroup.fetchRequest()
 
         guard
@@ -20,29 +19,26 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
         }
 
         for group in groups {
-            let entity = NSEntityDescription.entity(forEntityName: "MovieGroup", in:
-                                                        managedContext)!
+            if let entity = NSEntityDescription.entity(forEntityName: "MovieGroup", in: managedContext) {
+                let movieGroup = MovieGroup(entity: entity, insertInto: managedContext)
 
-            let movieGroup = MovieGroup(entity: entity, insertInto: managedContext)
+                if
+                    let name = group.description
+                {
+                    movieGroup.name = name
+                }
 
-            if
-                let name = group.description
-            {
-                movieGroup.name = name
+                DispatchQueue.main.async {
+                    try? self.managedContext.save()
+                }
             }
-
-            try? managedContext.save()
+            else {
+                print("GRUPA NIL")
+            }
         }
     }
 
     func saveGenres(genres: [GenreNetwork]) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         let fetch: NSFetchRequest<MovieGenre> = MovieGenre.fetchRequest()
 
         guard
@@ -52,81 +48,80 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
             return
         }
 
+        print("ŽANROVI")
+
         for genre in genres {
-            let entity = NSEntityDescription.entity(forEntityName: "MovieGenre", in:
-                                                        managedContext)!
+            if let entity = NSEntityDescription.entity(forEntityName: "MovieGenre", in: managedContext) {
+                let movieGenre = MovieGenre(entity: entity, insertInto: managedContext)
 
-            let movieGenre = MovieGenre(entity: entity, insertInto: managedContext)
+                movieGenre.id = Int16(genre.id)
+                movieGenre.name = genre.name
 
-            movieGenre.id = Int16(genre.id)
-            movieGenre.name = genre.name
-
-            try? managedContext.save()
+                DispatchQueue.main.async {
+                    try? self.managedContext.save()
+                }
+            }
         }
     }
 
     func saveMovies(movies: [MovieNetwork], group: MovieGroupConst) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         guard
             let groupName = group.description,
             let group = fetchMovieGroup(withName: groupName)
         else {
             return
         }
+        print("JOPA dodajemo filmove")
         for movieNetwork in movies {
 
-            let entity = NSEntityDescription.entity(forEntityName: "Movie", in:
-                                                        managedContext)!
+            if let entity = NSEntityDescription.entity(forEntityName: "Movie", in:
+                                                        managedContext) {
+                if
+                    let movieDatabase = fetchMovie(forMovieWithId: movieNetwork.id)
+                {
+                    DispatchQueue.main.async {
+                        group.addToGroupMovies(movieDatabase)
+                    }
+                } else {
+                    print("nije u bazi")
+                    let movie = Movie(entity: entity, insertInto: managedContext)
+                    movie.id = Int32(movieNetwork.id)
+                    movie.posterPath = movieNetwork.posterPath
+                    movie.title = movieNetwork.title
+                    movie.overview = movieNetwork.overview
+                    movie.adult = movieNetwork.adult
+                    movie.backdropPath = movieNetwork.backdropPath
+                    movie.originalLanguage = movieNetwork.originalLanguage
+                    movie.originalTitle = movieNetwork.originalTitle
+                    movie.popularity = movieNetwork.popularity
+                    movie.releaseDate = movieNetwork.releaseDate
+                    movie.video = movieNetwork.video
+                    movie.voteAverage = movieNetwork.voteAverage
+                    movie.voteCount = Int32(movieNetwork.voteCount)
+                    movie.isFavorite = false
 
-            if
-                let movieDatabase = fetchMovie(forMovieWithId: movieNetwork.id)
-            {
-                group.addToGroupMovies(movieDatabase)
-            } else {
-                print("nije u bazi")
-                let movie = Movie(entity: entity, insertInto: managedContext)
-                movie.id = Int32(movieNetwork.id)
-                movie.posterPath = movieNetwork.posterPath
-                movie.title = movieNetwork.title
-                movie.overview = movieNetwork.overview
-                movie.adult = movieNetwork.adult
-                movie.backdropPath = movieNetwork.backdropPath
-                movie.originalLanguage = movieNetwork.originalLanguage
-                movie.originalTitle = movieNetwork.originalTitle
-                movie.popularity = movieNetwork.popularity
-                movie.releaseDate = movieNetwork.releaseDate
-                movie.video = movieNetwork.video
-                movie.voteAverage = movieNetwork.voteAverage
-                movie.voteCount = Int32(movieNetwork.voteCount)
-                movie.isFavorite = false
-
-                for genre in movieNetwork.genreIds {
-                    if
-                        let genreDatabase = fetchGenre(forGenreWithId: genre)
-                    {
-                        print("u filmu našli žanr wooohooo")
-                        genreDatabase.addToMovies(movie)
+                    for genre in movieNetwork.genreIds {
+                        if
+                            let genreDatabase = fetchGenre(forGenreWithId: genre)
+                        {
+                            print("u filmu našli žanr wooohooo")
+                            DispatchQueue.main.async {
+                                genreDatabase.addToMovies(movie)
+                            }
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        group.addToGroupMovies(movie)
                     }
                 }
-                group.addToGroupMovies(movie)
+                DispatchQueue.main.async {
+                    try? self.managedContext.save()
+                }
             }
-            try? managedContext.save()
         }
     }
 
     func fetchGenre(forGenreWithId genreId: Int) -> MovieGenre? {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return nil
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
         let request: NSFetchRequest<MovieGenre> = MovieGenre.fetchRequest()
         let predicate = NSPredicate(format: "id = %@", "\(genreId)")
         request.predicate = predicate
@@ -140,12 +135,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
     }
 
     func fetchMovie(forMovieWithId movieId: Int) -> Movie? {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return nil
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         let predicate = NSPredicate(format: "id = %@", "\(movieId)")
         request.predicate = predicate
@@ -159,12 +148,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
     }
 
     func fetchMovieGroup(withName name: String) -> MovieGroup? {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return nil
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
         let request: NSFetchRequest<MovieGroup> = MovieGroup.fetchRequest()
         let predicate = NSPredicate(format: "name = %@", "\(name)")
         request.predicate = predicate
@@ -178,13 +161,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
     }
 
     func fetchMovies() -> [Movie] {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return []
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         do {
             let results = try managedContext.fetch(request)
@@ -196,13 +172,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
     }
 
     func fetchGenres() -> [MovieGenre] {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return []
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         let request: NSFetchRequest<MovieGenre> = MovieGenre.fetchRequest()
         do {
             let results = try managedContext.fetch(request)
@@ -214,13 +183,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
     }
 
     func fetchGroups() -> [MovieGroup] {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return []
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         let request: NSFetchRequest<MovieGroup> = MovieGroup.fetchRequest()
         do {
             let results = try managedContext.fetch(request)
@@ -233,13 +195,10 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
 
     func fetchMovies(forGroupWithName group: MovieGroupConst) -> [Movie] {
         guard
-            let appDelegate = UIApplication.shared.delegate as? AppDelegate,
             let groupName = group.description
         else {
             return []
         }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
 
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         let predicate = NSPredicate(format: "ANY groups.name = %@", "\(groupName)")
@@ -253,13 +212,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
     }
 
     func fetchFavoriteMovies() -> [Movie] {
-        guard
-            let appDelegate = UIApplication.shared.delegate as? AppDelegate        else {
-            return []
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         let predicate = NSPredicate(format: "isFavorite = true")
         request.predicate = predicate
@@ -272,26 +224,14 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
     }
 
     func updateMovie(forMovieWithId id: Int, isFavorite: Bool) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
-            return
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         let movie = fetchMovie(forMovieWithId: id)
         movie?.isFavorite = isFavorite
-        try? managedContext.save()
+        DispatchQueue.main.async {
+            try? self.managedContext.save()
+        }
     }
 
     func fetchMovies(whichNameContains substring: String) -> [Movie] {
-        guard
-            let appDelegate = UIApplication.shared.delegate as? AppDelegate        else {
-            return []
-        }
-
-        let managedContext = appDelegate.persistentContainer.viewContext
-
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         let predicate = NSPredicate(format: "%K CONTAINS[c] %@", argumentArray: [#keyPath(Movie.title), substring])
 

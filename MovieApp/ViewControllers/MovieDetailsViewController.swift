@@ -13,14 +13,15 @@ class MovieDetailsViewController: UIViewController {
     private var navigationBarImageView: UIImageView!
     private var navigationBarImage: UIImage!
 
-    private let moviesRepository = MovieRepository()
+    private var movieRepository: MovieRepository!
     private let networkMonitor = NetworkMonitor()
 
     private var id: String?
 
-    init(id: String) {
+    init(id: String, movieRepository: MovieRepository) {
         super.init(nibName: nil, bundle: nil)
         self.id = id
+        self.movieRepository = movieRepository
     }
 
     required init?(coder: NSCoder) {
@@ -210,7 +211,7 @@ class MovieDetailsViewController: UIViewController {
         activityIndicatorView.startAnimating()
         guard let id = id else { return }
 
-        moviesRepository.getDetailsFromNetwork(id: id) { [weak self] result in
+        movieRepository.getDetailsFromNetwork(id: id) { [weak self] result in
             guard let self = self else { return }
 
             switch result {

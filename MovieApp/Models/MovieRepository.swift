@@ -1,6 +1,11 @@
 class MovieRepository {
-    private let networkService: MoviesNetworkDataSourceProtocol = MoviesNetworkDataSource()
-    private let databaseService: MovieDatabaseDataSourceProtocol = MoviesDatabaseDataSource()
+    private let networkService: MoviesNetworkDataSourceProtocol
+    private let databaseService: MovieDatabaseDataSourceProtocol
+
+    init(networkService: MoviesNetworkDataSourceProtocol, databaseService: MovieDatabaseDataSourceProtocol) {
+        self.networkService = networkService
+        self.databaseService = databaseService
+    }
 
     func getGenresFromNetwork(completionHandlerGenres: @escaping ((Result<[GenreNetwork], RequestError>) -> Void)) {
         networkService.getGenres(completionHandlerGenres: completionHandlerGenres)

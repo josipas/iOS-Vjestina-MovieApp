@@ -12,31 +12,41 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = createTabBar()
+
+        DispatchQueue.main.async {
+            let networkService = MoviesNetworkDataSource(networkService: NetworkService())
+            let coreStack = CoreStack()
+            let coreDataContext = coreStack.managedContext
+            let databaseService = MoviesDatabaseDataSource(context: coreDataContext)
+            let movieRepository = MovieRepository(networkService: networkService, databaseService: databaseService)
+            self.window?.rootViewController = self.createTabBar(movieRepository: movieRepository)
+        }
+
         window?.makeKeyAndVisible()
     }
 
-    func createTabBar() -> UITabBarController {
+    func createTabBar(movieRepository: MovieRepository) -> UITabBarController {
         let tabBarController = UITabBarController()
 
         setUpTabBar(tabBarController: tabBarController)
 
-        //coordinatoru se u initu predaje navigation od prvoga!!!!!!!!!!
-        tabBarController.viewControllers = [createMovieListNavigationController(), createFavoritesNavigationController()]
+        tabBarController.viewControllers = [createMovieListNavigationController(movieRepository: movieRepository), createFavoritesNavigationController(movieRepository: movieRepository)]
 
         return tabBarController
     }
 
-    func createMovieListNavigationController() -> UINavigationController {
-        let movieListViewController = MovieListViewController()
+    func createMovieListNavigationController(movieRepository: MovieRepository) -> UINavigationController {
+
+
+        let movieListViewController = MovieListViewController(movieRepository: movieRepository)
 
         movieListViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), selectedImage: UIImage(systemName: "house.fill"))
 
         return UINavigationController(rootViewController: movieListViewController)
     }
 
-    func createFavoritesNavigationController() -> UINavigationController {
-        let favoritesViewController = FavoritesViewController()
+    func createFavoritesNavigationController(movieRepository: MovieRepository) -> UINavigationController {
+        let favoritesViewController = FavoritesViewController(movieRepository: movieRepository)
 
         favoritesViewController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart"), selectedImage: UIImage(systemName: "heart.fill"))
 

@@ -7,8 +7,18 @@ class FavoritesViewController: UIViewController {
     private var favoritesTitle: UILabel!
     private var favoriteMovies: UICollectionView!
 
-    private let movieRepository = MovieRepository()
+    private var movieRepository: MovieRepository!
     private var movies: [MovieViewModel] = []
+
+    init(movieRepository: MovieRepository) {
+        super.init(nibName: nil, bundle: nil)
+
+        self.movieRepository = movieRepository
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +62,8 @@ class FavoritesViewController: UIViewController {
     }
 
     private func styleViews() {
+        overrideUserInterfaceStyle = .light
+
         favoritesTitle.text = "Favorites"
         favoritesTitle.font = .systemFont(ofSize: 20, weight: .bold)
         favoritesTitle.textColor = UIColor(hex: "#0B253F")
@@ -89,7 +101,7 @@ class FavoritesViewController: UIViewController {
     }
 
     private func pushMovieDetails(movieId: String) {
-        navigationController?.pushViewController(MovieDetailsViewController(id: movieId), animated: true)
+        navigationController?.pushViewController(MovieDetailsViewController(id: movieId, movieRepository: movieRepository), animated: true)
     }
 }
 

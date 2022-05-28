@@ -1,7 +1,11 @@
 import Foundation
 
 class MoviesNetworkDataSource: MoviesNetworkDataSourceProtocol {
-    private let networkService: NetworkingServiceProtocol = NetworkService()
+    private let networkService: NetworkingServiceProtocol
+
+    init(networkService: NetworkingServiceProtocol) {
+        self.networkService = networkService
+    }
 
     func getGenres(completionHandlerGenres: @escaping ((Result<[GenreNetwork], RequestError>) -> Void)) {
         var endpoint = URLComponents()
