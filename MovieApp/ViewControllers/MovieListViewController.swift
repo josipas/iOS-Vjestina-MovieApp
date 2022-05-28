@@ -9,15 +9,16 @@ class MovieListViewController: UIViewController {
     private var navigationBarImageView: UIImageView!
     private var navigationBarImage: UIImage!
 
-    private var genres: [Genre] = []
-    private var popularMovies: [Movie] = []
-    private var trendingMovies: [Movie] = []
-    private var topRatedMovies: [Movie] = []
-    private var recommendedMovies: [Movie] = []
+    private var genres: [MovieGenreViewModel] = []
+    private var popularMovies: [MovieViewModel] = []
+    private var trendingMovies: [MovieViewModel] = []
+    private var topRatedMovies: [MovieViewModel] = []
+    private var recommendedMovies: [MovieViewModel] = []
+    private var searchMovies: [MovieViewModel] = []
 
     private let networkMonitor = NetworkMonitor()
-    private let groups: [MovieGroup] = MovieGroup.allCases.filter { $0.description != nil }
-    private let apiService: ApiServiceProtocol = ApiService()
+    private let groups: [MovieGroupConst] = MovieGroupConst.allCases.filter { $0.description != nil }
+    private let movieRepository = MovieRepository()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,22 +38,41 @@ class MovieListViewController: UIViewController {
         })
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+
+        popularMovies = movieRepository.fetchMoviesFromDatabase(inMovieGroup: .popular)
+
+        trendingMovies = movieRepository.fetchMoviesFromDatabase(inMovieGroup: .trending)
+
+        topRatedMovies = movieRepository.fetchMoviesFromDatabase(inMovieGroup: .topRated)
+
+        recommendedMovies = movieRepository.fetchMoviesFromDatabase(inMovieGroup: .recommended)
+
+        genres = movieRepository.fetchGenresFromDatabase()
+
+        DispatchQueue.main.async {
+            self.nonFocusTableView.reloadData()
+        }
+
+    }
+
     private func getData() {
-        apiService.getGenres { [weak self] result in
+        movieRepository.saveGroupsToDatabase(groups: groups)
+
+        movieRepository.getGenresFromNetwork { [weak self] result in
             guard let self = self else { return }
 
             switch result {
             case .success(let genres):
-                self.genres = genres
-                DispatchQueue.main.async {
-                    self.nonFocusTableView.reloadData()
-                }
+                self.movieRepository.saveGenresToDatabase(genres: genres)
+
             case .failure(let error):
                 print(error)
             }
         }
 
-        apiService.getMovies(completionHandlerMovies: { [weak self] result, group in
+        movieRepository.getMoviesFromNetwork { [weak self] result, group in
             guard let self = self else { return }
 
             switch result {
@@ -61,29 +81,19 @@ class MovieListViewController: UIViewController {
             case .success(let value):
                 switch group {
                 case .popular:
-                    self.popularMovies = value
-                    DispatchQueue.main.async {
-                        self.nonFocusTableView.reloadData()
-                    }
+                    self.movieRepository.saveMoviesToDatabase(movies: value, group: .popular)
+
                 case .trending:
-                    self.trendingMovies = value
-                    DispatchQueue.main.async {
-                        self.nonFocusTableView.reloadData()
-                        self.focusTableView.reloadData()
-                    }
+                    self.movieRepository.saveMoviesToDatabase(movies: value, group: .trending)
+
                 case .topRated:
-                    self.topRatedMovies = value
-                    DispatchQueue.main.async {
-                        self.nonFocusTableView.reloadData()
-                    }
+                    self.movieRepository.saveMoviesToDatabase(movies: value, group: .topRated)
+
                 case .recommended:
-                    self.recommendedMovies = value
-                    DispatchQueue.main.async {
-                        self.nonFocusTableView.reloadData()
-                    }
+                    self.movieRepository.saveMoviesToDatabase(movies: value, group: .recommended)
                 }
             }
-        })
+        }
     }
 
     private func buildViews() {
@@ -176,6 +186,11 @@ class MovieListViewController: UIViewController {
 }
 
 extension MovieListViewController: SearchInFocusDelegate {
+    func textChanged(text: String) {
+        searchMovies = movieRepository.fetchMoviesFromDatabase(text: text)
+        focusTableView.reloadData()
+    }
+
     func inFocus(bool: Bool) {
         switch bool {
         case true:
@@ -204,7 +219,7 @@ extension MovieListViewController: UITableViewDataSource {
             return 1
         }
         else {
-            return trendingMovies.count
+            return searchMovies.count
         }
     }
 
@@ -234,7 +249,7 @@ extension MovieListViewController: UITableViewDataSource {
                 fatalError()
             }
 
-            let movie = trendingMovies[indexPath.row]
+            let movie = searchMovies[indexPath.row]
 
             cell.set(movie: movie)
             cell.selectionStyle = .none
@@ -258,14 +273,18 @@ extension MovieListViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == focusTableView {
-            let movieId = String(trendingMovies[indexPath.row].id)
+            let movieId = String(searchMovies[indexPath.row].id)
             self.pushMovieDetails(movieId: movieId)
         }
     }
 }
 
 extension MovieListViewController: CustomCollectionViewDelegate {
-    func getMoviesCount(group: MovieGroup) -> Int {
+    func heartTapped(movieId: Int, state: Bool) {
+        movieRepository.updateMovieInDatabase(movieId: movieId, isFavorite: state)
+    }
+
+    func getMoviesCount(group: MovieGroupConst) -> Int {
         switch group {
         case .popular:
             return popularMovies.count
@@ -278,24 +297,20 @@ extension MovieListViewController: CustomCollectionViewDelegate {
         }
     }
 
-    func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String {
+    func getMovie(indexPath: IndexPath, group: MovieGroupConst) -> MovieViewModel {
         switch group {
         case .popular:
-            guard let posterPath = popularMovies[indexPath.row].posterPath else { return ""}
-            return "\(Constants.baseUrlForImages)\(posterPath)"
+            return popularMovies[indexPath.row]
         case .trending:
-            guard let posterPath = trendingMovies[indexPath.row].posterPath else { return ""}
-            return "\(Constants.baseUrlForImages)\(posterPath)"
+            return trendingMovies[indexPath.row]
         case .topRated:
-            guard let posterPath = topRatedMovies[indexPath.row].posterPath else { return ""}
-            return "\(Constants.baseUrlForImages)\(posterPath)"
+            return topRatedMovies[indexPath.row]
         case .recommended:
-            guard let posterPath = recommendedMovies[indexPath.row].posterPath else { return ""}
-            return "\(Constants.baseUrlForImages)\(posterPath)"
+            return recommendedMovies[indexPath.row]
         }
     }
 
-    func didTapMovie(group: MovieGroup, indexPath: IndexPath) {
+    func didTapMovie(group: MovieGroupConst, indexPath: IndexPath) {
         var movieId: String? = nil
 
         switch group {

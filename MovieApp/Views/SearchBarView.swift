@@ -2,6 +2,7 @@ import UIKit
 
 protocol SearchInFocusDelegate: AnyObject {
     func inFocus(bool: Bool)
+    func textChanged(text: String)
 }
 
 class SearchBarView: UIView {
@@ -108,14 +109,21 @@ class SearchBarView: UIView {
     private func addActions() {
         xMarkButton.addTarget(self, action: #selector(tappedXMarkButton), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(tappedCancelButton), for: .touchUpInside)
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
 
     @objc private func tappedXMarkButton() {
         textField.text = ""
+        delegate?.textChanged(text: "")
     }
 
     @objc private func tappedCancelButton() {
         textField.endEditing(true)
+    }
+
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        delegate?.textChanged(text: text)
     }
 }
 
@@ -123,6 +131,7 @@ extension SearchBarView: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         xMarkButton.isHidden = false
         cancelButton.isHidden = false
+        textField.becomeFirstResponder()
         delegate?.inFocus(bool: true)
     }
 
@@ -131,5 +140,6 @@ extension SearchBarView: UITextFieldDelegate {
         xMarkButton.isHidden = true
         cancelButton.isHidden = true
         delegate?.inFocus(bool: false)
+        textField.resignFirstResponder()
     }
 }

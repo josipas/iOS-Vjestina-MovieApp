@@ -1,5 +1,5 @@
 struct MovieDetailsResponse: Codable {
-    let genres: [Genre]
+    let genres: [GenreNetwork]
     let overview: String?
     let posterPath: String?
     let releaseDate: String

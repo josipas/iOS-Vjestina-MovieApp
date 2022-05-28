@@ -1,8 +1,8 @@
 import UIKit
 import SnapKit
 
-protocol RoundImageBackgroundViewDelegate {
-    func heartTapped()
+protocol RoundImageBackgroundViewDelegate: AnyObject {
+    func heartTapped(state: Bool)
 }
 
 class RoundImageBackgroundView: UIView {
@@ -11,8 +11,12 @@ class RoundImageBackgroundView: UIView {
 
     private var image: UIImage!
     private var imageView: UIImageView!
-    private var delegate: RoundImageBackgroundViewDelegate?
     private var flag: Bool = false
+
+    weak var delegate: RoundImageBackgroundViewDelegate?
+
+    private let heartImage = UIImage(systemName: "heart")
+    private let filledHeartImage = UIImage(systemName: "heart.fill")
 
     init(imageTitle: String, hexColor: String, size: Int) {
         super.init(frame: .zero)
@@ -26,6 +30,11 @@ class RoundImageBackgroundView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    public func set(isFavorite: Bool) {
+        self.flag = isFavorite
+        imageView.image = (flag == false ?  heartImage : filledHeartImage)
     }
 
     private func buildViews() {
@@ -73,12 +82,9 @@ class RoundImageBackgroundView: UIView {
     }
 
     @objc private func heartTapped() {
-        print("Srce")
         flag.toggle()
-        let heartImage = UIImage(systemName: "heart")
-        let filledHeartImage = UIImage(systemName: "heart.fill")
         imageView.image = (flag == false ?  heartImage : filledHeartImage)
-        delegate?.heartTapped()
+        delegate?.heartTapped(state: flag)
     }
 
     override func layoutSubviews() {

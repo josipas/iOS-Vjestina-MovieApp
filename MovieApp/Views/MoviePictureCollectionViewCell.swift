@@ -1,5 +1,9 @@
 import UIKit
 
+protocol MoviePictureCollectionViewCellDelegate: AnyObject {
+    func heartTapped(movieId: Int, state: Bool)
+}
+
 class MoviePictureCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = String(describing: MoviePictureCollectionViewCell.self)
 
@@ -7,6 +11,9 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
     private var imageView: UIImageView!
     private var heartView: RoundImageBackgroundView!
     private var view: UIView!
+    private var movieId: Int?
+
+    weak var delegate: MoviePictureCollectionViewCellDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -24,8 +31,10 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
 
-    func set(imageUrl: String) {
+    func set(imageUrl: String, movieId: Int, isFavorite: Bool) {
         imageView.load(imageUrl: imageUrl)
+        self.movieId = movieId
+        heartView.set(isFavorite: isFavorite)
     }
 
     private func buildViews() {
@@ -38,7 +47,7 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
     private func createViews() {
         imageView = UIImageView()
         heartView = RoundImageBackgroundView(imageTitle: "heart", hexColor: "#0B253F", size: 18)
-        //heartView.delegate = self
+        heartView.delegate = self
     }
 
     private func addSubviews() {
@@ -61,5 +70,13 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
             $0.height.width.equalTo(32)
             $0.top.leading.equalToSuperview().inset(10)
         }
+    }
+}
+
+extension MoviePictureCollectionViewCell: RoundImageBackgroundViewDelegate {
+    func heartTapped(state: Bool) {
+        guard let movieId = movieId else { return }
+
+        delegate?.heartTapped(movieId: movieId, state: state)
     }
 }

@@ -1,4 +1,4 @@
-public enum MovieGroup: CaseIterable {
+public enum MovieGroupConst: CaseIterable {
     case popular
     case trending
     case topRated

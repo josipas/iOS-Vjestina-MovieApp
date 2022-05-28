@@ -2,9 +2,10 @@ import UIKit
 import MovieAppData
 
 protocol CustomCollectionViewDelegate: AnyObject {
-    func getMoviesCount(group: MovieGroup) -> Int
-    func getMovieImageUrl(indexPath: IndexPath, group: MovieGroup) -> String
-    func didTapMovie(group: MovieGroup, indexPath: IndexPath)
+    func getMoviesCount(group: MovieGroupConst) -> Int
+    func getMovie(indexPath: IndexPath, group: MovieGroupConst) -> MovieViewModel
+    func didTapMovie(group: MovieGroupConst, indexPath: IndexPath)
+    func heartTapped(movieId: Int, state: Bool)
 }
 
 class MoviesNonFocusTableViewCell: UITableViewCell {
@@ -14,7 +15,7 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
     private var selectionView: CustomSegmentedControl!
     private var collectionView: UICollectionView!
 
-    private var group: MovieGroup?
+    private var group: MovieGroupConst?
 
     weak var delegate: CustomCollectionViewDelegate?
 
@@ -35,7 +36,7 @@ class MoviesNonFocusTableViewCell: UITableViewCell {
         self.group = nil
     }
 
-    func set(genres: [Genre], group: MovieGroup) {
+    func set(genres: [MovieGenreViewModel], group: MovieGroupConst) {
         titleLabel.text = group.description
         self.group = group
         genres.forEach({ genre in
@@ -128,9 +129,11 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
 
         if
             let group = group,
-            let imageUrl = delegate?.getMovieImageUrl(indexPath: indexPath, group: group)
+            let movie = delegate?.getMovie(indexPath: indexPath, group: group),
+            let imageUrl = movie.posterPath
         {
-            cell.set(imageUrl: imageUrl)
+            cell.set(imageUrl: "\(Constants.baseUrlForImages)\(imageUrl)", movieId: movie.id, isFavorite: movie.isFavorite)
+            cell.delegate = self
         }
 
         return cell
@@ -158,5 +161,11 @@ extension UITableViewCell {
     open override func addSubview(_ view: UIView) {
         super.addSubview(view)
         sendSubviewToBack(contentView)
+    }
+}
+
+extension MoviesNonFocusTableViewCell: MoviePictureCollectionViewCellDelegate {
+    func heartTapped(movieId: Int, state: Bool) {
+        delegate?.heartTapped(movieId: movieId, state: state)
     }
 }

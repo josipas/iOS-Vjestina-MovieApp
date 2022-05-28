@@ -1,9 +1,9 @@
 import Foundation
 
-class ApiService: ApiServiceProtocol {
+class MoviesNetworkDataSource: MoviesNetworkDataSourceProtocol {
     private let networkService: NetworkingServiceProtocol = NetworkService()
 
-    func getGenres(completionHandlerGenres: @escaping ((Result<[Genre], RequestError>) -> Void)) {
+    func getGenres(completionHandlerGenres: @escaping ((Result<[GenreNetwork], RequestError>) -> Void)) {
         var endpoint = URLComponents()
 
         endpoint.scheme = Constants.baseScheme
@@ -21,7 +21,7 @@ class ApiService: ApiServiceProtocol {
         networkService.getGenres(URLRequest(url: url), completionHandler: completionHandlerGenres)
     }
 
-    func getMovies(completionHandlerMovies: @escaping ((Result<[Movie], RequestError>, MovieGroup) -> Void)) {
+    func getMovies(completionHandlerMovies: @escaping ((Result<[MovieNetwork], RequestError>, MovieGroupConst) -> Void)) {
         getMovies(group: .popular, completionHandlerMovies: completionHandlerMovies)
         getMovies(group: .trending, completionHandlerMovies: completionHandlerMovies)
         getMovies(group: .recommended, completionHandlerMovies: completionHandlerMovies)
@@ -29,7 +29,7 @@ class ApiService: ApiServiceProtocol {
     }
 
 
-    private func getMovies(group: MovieGroup, completionHandlerMovies: @escaping ((Result<[Movie], RequestError>, MovieGroup) -> Void)) {
+    private func getMovies(group: MovieGroupConst, completionHandlerMovies: @escaping ((Result<[MovieNetwork], RequestError>, MovieGroupConst) -> Void)) {
         var endpoint = URLComponents()
 
         endpoint.scheme = Constants.baseScheme

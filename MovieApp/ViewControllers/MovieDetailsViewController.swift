@@ -13,7 +13,7 @@ class MovieDetailsViewController: UIViewController {
     private var navigationBarImageView: UIImageView!
     private var navigationBarImage: UIImage!
 
-    private let apiService: ApiServiceProtocol = ApiService()
+    private let moviesRepository = MovieRepository()
     private let networkMonitor = NetworkMonitor()
 
     private var id: String?
@@ -210,7 +210,7 @@ class MovieDetailsViewController: UIViewController {
         activityIndicatorView.startAnimating()
         guard let id = id else { return }
 
-        ApiService().getDetails(id: id, completionHandler: { [weak self] result in
+        moviesRepository.getDetailsFromNetwork(id: id) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -223,7 +223,7 @@ class MovieDetailsViewController: UIViewController {
             case .failure(let error):
                 print(error)
             }
-        })
+        }
     }
 
     private func showNoInternetConnectionAlert() {

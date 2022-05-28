@@ -1,7 +1,7 @@
 import Foundation
 
 class NetworkService: NetworkingServiceProtocol {
-    func getMovies(_ request: URLRequest, group: MovieGroup, completionHandler: @escaping ((Result<[Movie], RequestError>, MovieGroup) -> Void)) {
+    func getMovies(_ request: URLRequest, group: MovieGroupConst, completionHandler: @escaping ((Result<[MovieNetwork], RequestError>, MovieGroupConst) -> Void)) {
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, err in
 
             guard err == nil else {
@@ -19,7 +19,7 @@ class NetworkService: NetworkingServiceProtocol {
                 return
             }
 
-            guard let value = try? JSONDecoder().decode(MovieResponse.self, from: data)
+            guard let value = try? JSONDecoder().decode(MovieNetworkResponse.self, from: data)
             else {
                 completionHandler(.failure(.dataDecodingError), group)
                 return
@@ -57,7 +57,7 @@ class NetworkService: NetworkingServiceProtocol {
         dataTask.resume()
     }
 
-    func getGenres(_ request: URLRequest, completionHandler: @escaping ((Result<[Genre], RequestError>) -> Void)) {
+    func getGenres(_ request: URLRequest, completionHandler: @escaping ((Result<[GenreNetwork], RequestError>) -> Void)) {
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, err in
 
             guard err == nil else {
@@ -75,7 +75,7 @@ class NetworkService: NetworkingServiceProtocol {
                 return
             }
 
-            guard let value = try? JSONDecoder().decode(GenreResponse.self, from: data)
+            guard let value = try? JSONDecoder().decode(GenreNetworkResponse.self, from: data)
             else {
                 completionHandler(.failure(.dataDecodingError))
                 return

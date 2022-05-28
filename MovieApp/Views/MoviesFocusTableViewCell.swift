@@ -27,7 +27,7 @@ class MoviesFocusTableViewCell: UITableViewCell {
         descriptionLabel.text = nil
     }
 
-    func set(movie: Movie) {
+    func set(movie: MovieViewModel) {
         var imageUrl = ""
         if let posterPath = movie.posterPath {
             imageUrl = "\(Constants.baseUrlForImages)\(posterPath)"

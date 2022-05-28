@@ -7,7 +7,8 @@ class FavoritesViewController: UIViewController {
     private var favoritesTitle: UILabel!
     private var favoriteMovies: UICollectionView!
 
-    private let movies = MovieAppData.Movies.all()
+    private let movieRepository = MovieRepository()
+    private var movies: [MovieViewModel] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +17,13 @@ class FavoritesViewController: UIViewController {
 
         buildViews()
         setUpNavBar()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+
+        movies = movieRepository.fetchFavoriteMoviesFromDatabase()
+        favoriteMovies.reloadData()
     }
 
     private func buildViews() {
@@ -79,11 +87,15 @@ class FavoritesViewController: UIViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", image: nil, primaryAction: nil, menu: nil)
         self.navigationItem.backBarButtonItem?.tintColor = .white
     }
+
+    private func pushMovieDetails(movieId: String) {
+        navigationController?.pushViewController(MovieDetailsViewController(id: movieId), animated: true)
+    }
 }
 
 extension FavoritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        15
+        movies.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -93,9 +105,14 @@ extension FavoritesViewController: UICollectionViewDataSource {
             fatalError()
         }
 
-
-        let imageUrl = movies[indexPath.row].imageUrl
-        cell.set(imageUrl: imageUrl)
+        guard
+            let posterPath = movies[indexPath.row].posterPath
+        else {
+            return cell
+        }
+        
+        cell.set(imageUrl: "\(Constants.baseUrlForImages)\(posterPath)", movieId: movies[indexPath.row].id, isFavorite: movies[indexPath.row].isFavorite)
+        cell.delegate = self
 
         return cell
     }
@@ -116,6 +133,15 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
+        let movieId = String(movies[indexPath.row].id)
+        pushMovieDetails(movieId: movieId)
+    }
+}
+
+extension FavoritesViewController: MoviePictureCollectionViewCellDelegate {
+    func heartTapped(movieId: Int, state: Bool) {
+        movieRepository.updateMovieInDatabase(movieId: movieId, isFavorite: state)
+        movies = movieRepository.fetchFavoriteMoviesFromDatabase()
+        favoriteMovies.reloadData()
     }
 }
