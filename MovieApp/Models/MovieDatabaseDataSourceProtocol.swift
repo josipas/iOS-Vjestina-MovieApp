@@ -7,4 +7,5 @@ protocol MovieDatabaseDataSourceProtocol {
     func updateMovie(forMovieWithId id: Int, isFavorite: Bool)
     func fetchMovies(whichNameContains substring: String) -> [Movie]
     func fetchFavoriteMovies() -> [Movie]
+    func fetchMovie(forMovieWithId movieId: Int) -> Movie?
 }

@@ -22,7 +22,7 @@ class OverlayImageView: UIView {
     }
 
     public func set(data: OverlayImageViewData) {
-        backgroundImageView.load(imageUrl: data.imageTitle)
+        backgroundImageView.image = data.image
         titleYearLabel.attributedText = NSMutableAttributedString.getAPartialBoldAttributedString(fromString: "\(data.title) \(data.year)",withSubstring: "\(data.title)", forSize: 24, color: .white)
 
         dateLabel.text = data.date

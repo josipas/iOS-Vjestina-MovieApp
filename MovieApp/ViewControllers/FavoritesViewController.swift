@@ -117,13 +117,12 @@ extension FavoritesViewController: UICollectionViewDataSource {
             fatalError()
         }
 
-        guard
+        if
             let posterPath = movies[indexPath.row].posterPath
-        else {
-            return cell
+        {
+            cell.set(image: posterPath, movieId: movies[indexPath.row].id, isFavorite: movies[indexPath.row].isFavorite)
         }
-        
-        cell.set(imageUrl: "\(Constants.baseUrlForImages)\(posterPath)", movieId: movies[indexPath.row].id, isFavorite: movies[indexPath.row].isFavorite)
+
         cell.delegate = self
 
         return cell

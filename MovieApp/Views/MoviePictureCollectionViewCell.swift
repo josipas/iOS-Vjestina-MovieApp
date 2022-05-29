@@ -31,8 +31,8 @@ class MoviePictureCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
 
-    func set(imageUrl: String, movieId: Int, isFavorite: Bool) {
-        imageView.load(imageUrl: imageUrl)
+    func set(image: UIImage, movieId: Int, isFavorite: Bool) {
+        imageView.image = image
         self.movieId = movieId
         heartView.set(isFavorite: isFavorite)
     }

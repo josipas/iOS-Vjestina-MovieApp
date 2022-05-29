@@ -210,7 +210,7 @@ class MovieListViewController: UIViewController {
     }
 
     private func showNoInternetConnectionAlert() {
-        let alert = UIAlertController(title: "No internet", message: "Please check your internet connection and try again.", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "No internet", message: "Please check your internet connection.", preferredStyle: UIAlertController.Style.alert)
 
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { _ in
 

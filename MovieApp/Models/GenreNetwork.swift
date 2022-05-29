@@ -1,4 +1,4 @@
-struct GenreNetwork: Codable {
+struct GenreNetwork: Codable, Any {
     let id: Int
     let name: String
 }

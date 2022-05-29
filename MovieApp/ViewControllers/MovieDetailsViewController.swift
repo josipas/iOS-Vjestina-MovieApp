@@ -50,6 +50,7 @@ class MovieDetailsViewController: UIViewController {
             DispatchQueue.main.async {
                 self.setUpNavBar()
                 self.buildViews()
+                self.getDataFromDatabase()
                 self.showNoInternetConnectionAlert()
             }
         })
@@ -176,35 +177,72 @@ class MovieDetailsViewController: UIViewController {
         }
     }
 
-    private func reload(movieDetails: MovieDetails) {
-        var url = ""
+    private func reload(image: UIImage,
+                        releaseDate: String,
+                        runtime: Int?,
+                        genres: [Any],
+                        title: String,
+                        overview: String
+    ) {
         var date = ""
         var year = ""
         var duration = ""
-        var genres = ""
+        var genresData = ""
 
-        if let posterPath = movieDetails.posterPath {
-            url = "\(Constants.baseUrlForImages)\(posterPath)"
-        }
-
-        let dateArray = movieDetails.releaseDate.split(separator: "-")
+        let dateArray = releaseDate.split(separator: "-")
 
         if dateArray.count > 2 {
             date = "\(dateArray[2])/\(dateArray[1])/\(dateArray[0])"
             year = "(\(dateArray[0]))"
         }
 
-        if let runtime = movieDetails.runtime {
+        if let runtime = runtime {
             duration = "\(runtime)m"
         }
 
-        movieDetails.genres.forEach { genre in
-            genres += "\(genre.name), "
+        genres.forEach { g in
+            if let genre = g as? GenreNetwork {
+                genresData += "\(genre.name), "
+            }
+            if let genre = g as? MovieGenreViewModel {
+                genresData += "\(genre.name), "
+            }
         }
 
-        imageView.set(data: OverlayImageViewData(imageTitle: url, title: movieDetails.title, year: year, date: date, genres: String(genres.dropLast(2)), duration: duration))
+        imageView.set(data: OverlayImageViewData(image: image, title: title, year: year, date: date, genres: String(genresData.dropLast(2)), duration: duration))
 
-        overviewDescription.text = movieDetails.overview
+        overviewDescription.text = overview
+    }
+
+    private func getDataFromDatabase() {
+        activityIndicatorView.startAnimating()
+        guard
+            let id = id,
+            let movieId = Int(id)
+        else { return }
+
+        if let movie = movieRepository.fetchMovies(movieId: movieId) {
+            DispatchQueue.main.async {
+                if let image = movie.posterPath {
+                    self.reload(image: image, releaseDate: movie.releaseDate, runtime: nil, genres: movie.genres, title: movie.title, overview: movie.overview)
+                }
+                self.activityIndicatorView.stopAnimating()
+            }
+        }
+    }
+
+    private func getImage(imageUrl: String) -> UIImage? {
+        let url = URL(string: imageUrl)
+
+        guard let url = url else {
+            return nil
+        }
+
+        if let data = try? Data(contentsOf: url) {
+            return UIImage(data: data)
+        }
+
+        return nil
     }
 
     private func getData() {
@@ -216,10 +254,13 @@ class MovieDetailsViewController: UIViewController {
 
             switch result {
             case .success(let details):
-                print(details)
-                DispatchQueue.main.async {
-                    self.reload(movieDetails: details)
-                    self.activityIndicatorView.stopAnimating()
+                if
+                    let posterPath = details.posterPath,
+                    let image = self.getImage(imageUrl: "\(Constants.baseUrlForImages)\(posterPath)") {
+                    DispatchQueue.main.async {
+                        self.reload(image: image, releaseDate: details.releaseDate, runtime: details.runtime, genres: details.genres, title: details.title, overview: details.overview ?? "")
+                        self.activityIndicatorView.stopAnimating()
+                    }
                 }
             case .failure(let error):
                 print(error)
@@ -228,12 +269,9 @@ class MovieDetailsViewController: UIViewController {
     }
 
     private func showNoInternetConnectionAlert() {
-        let alert = UIAlertController(title: "No internet", message: "Please check your internet connection and try again.", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "No internet", message: "Some features are unvailable without internet.", preferredStyle: UIAlertController.Style.alert)
 
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { [weak self] _ in
-            guard let self = self else { return }
-
-            self.navigationController?.popViewController(animated: true)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: {_ in 
         }))
         self.present(alert, animated: true, completion: nil)
     }

@@ -28,12 +28,10 @@ class MoviesFocusTableViewCell: UITableViewCell {
     }
 
     func set(movie: MovieViewModel) {
-        var imageUrl = ""
         if let posterPath = movie.posterPath {
-            imageUrl = "\(Constants.baseUrlForImages)\(posterPath)"
+            posterView.image = posterPath
         }
 
-        posterView.load(imageUrl: imageUrl)
         titleLabel.text = movie.title
         descriptionLabel.text = movie.overview
     }

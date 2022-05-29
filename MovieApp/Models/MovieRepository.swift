@@ -58,4 +58,13 @@ class MovieRepository {
             MovieViewModel(fromModel: $0)
         }
     }
+
+    func fetchMovies(movieId: Int) -> MovieViewModel? {
+        if let movie = databaseService.fetchMovie(forMovieWithId: movieId) {
+            return MovieViewModel(fromModel: movie)
+        }
+        else {
+            return nil
+        }
+    }
 }

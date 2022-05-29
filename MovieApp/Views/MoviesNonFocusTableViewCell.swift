@@ -130,11 +130,12 @@ extension MoviesNonFocusTableViewCell: UICollectionViewDataSource {
         if
             let group = group,
             let movie = delegate?.getMovie(indexPath: indexPath, group: group),
-            let imageUrl = movie.posterPath
+            let image = movie.posterPath
         {
-            cell.set(imageUrl: "\(Constants.baseUrlForImages)\(imageUrl)", movieId: movie.id, isFavorite: movie.isFavorite)
-            cell.delegate = self
+            cell.set(image: image, movieId: movie.id, isFavorite: movie.isFavorite)
         }
+
+        cell.delegate = self
 
         return cell
     }

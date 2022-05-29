@@ -2,7 +2,7 @@
 //  Movie+CoreDataProperties.swift
 //  MovieApp
 //
-//  Created by Five on 23.05.2022..
+//  Created by Five on 29.05.2022..
 //
 //
 
@@ -19,17 +19,17 @@ extension Movie {
     @NSManaged public var adult: Bool
     @NSManaged public var backdropPath: String?
     @NSManaged public var id: Int32
+    @NSManaged public var isFavorite: Bool
     @NSManaged public var originalLanguage: String?
     @NSManaged public var originalTitle: String?
     @NSManaged public var overview: String?
     @NSManaged public var popularity: Double
-    @NSManaged public var posterPath: String?
+    @NSManaged public var posterPath: Data?
     @NSManaged public var releaseDate: String?
     @NSManaged public var title: String?
     @NSManaged public var video: Bool
     @NSManaged public var voteAverage: Double
     @NSManaged public var voteCount: Int32
-    @NSManaged public var isFavorite: Bool
     @NSManaged public var genres: NSSet?
     @NSManaged public var groups: NSSet?
 

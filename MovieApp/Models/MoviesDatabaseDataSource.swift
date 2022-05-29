@@ -33,7 +33,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
                 }
             }
             else {
-                print("GRUPA NIL")
             }
         }
     }
@@ -47,8 +46,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
         else {
             return
         }
-
-        print("ŽANROVI")
 
         for genre in genres {
             if let entity = NSEntityDescription.entity(forEntityName: "MovieGenre", in: managedContext) {
@@ -71,7 +68,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
         else {
             return
         }
-        print("JOPA dodajemo filmove")
         for movieNetwork in movies {
 
             if let entity = NSEntityDescription.entity(forEntityName: "Movie", in:
@@ -83,10 +79,17 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
                         group.addToGroupMovies(movieDatabase)
                     }
                 } else {
-                    print("nije u bazi")
                     let movie = Movie(entity: entity, insertInto: managedContext)
                     movie.id = Int32(movieNetwork.id)
-                    movie.posterPath = movieNetwork.posterPath
+
+                    if
+                        let posterPath = movieNetwork.posterPath,
+                        let url = URL(string: "\(Constants.baseUrlForImages)\(posterPath)") {
+                        if let data = try? Data(contentsOf: url) {
+                            let image = UIImage(data: data)
+                            movie.posterPath = image?.jpegData(compressionQuality: 1.0)
+                        }
+                    }
                     movie.title = movieNetwork.title
                     movie.overview = movieNetwork.overview
                     movie.adult = movieNetwork.adult
@@ -104,7 +107,6 @@ class MoviesDatabaseDataSource: MovieDatabaseDataSourceProtocol {
                         if
                             let genreDatabase = fetchGenre(forGenreWithId: genre)
                         {
-                            print("u filmu našli žanr wooohooo")
                             DispatchQueue.main.async {
                                 genreDatabase.addToMovies(movie)
                             }

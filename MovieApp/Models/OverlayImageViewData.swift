@@ -1,5 +1,7 @@
+import UIKit
+
 struct OverlayImageViewData {
-    let imageTitle: String
+    let image: UIImage
     let title: String
     let year: String
     let date: String
