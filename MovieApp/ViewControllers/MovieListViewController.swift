@@ -54,6 +54,10 @@ class MovieListViewController: UIViewController {
         super.viewDidAppear(animated)
 
         getDataFromDatabase()
+
+        DispatchQueue.main.async {
+            self.nonFocusTableView.reloadData()
+        }
     }
 
     private func getDataFromDatabase() {
@@ -66,10 +70,6 @@ class MovieListViewController: UIViewController {
         recommendedMovies = movieRepository.fetchMoviesFromDatabase(inMovieGroup: .recommended)
 
         genres = movieRepository.fetchGenresFromDatabase()
-
-        DispatchQueue.main.async {
-            self.nonFocusTableView.reloadData()
-        }
     }
 
     private func updateDatabase() {
@@ -104,30 +104,27 @@ class MovieListViewController: UIViewController {
                 case .popular:
                     DispatchQueue.main.async {
                         self.movieRepository.saveMoviesToDatabase(movies: value, group: .popular)
-                        self.popularMovies = self.movieRepository.fetchMoviesFromDatabase(inMovieGroup: .popular)
                     }
 
                 case .trending:
                     DispatchQueue.main.async {
                         self.movieRepository.saveMoviesToDatabase(movies: value, group: .trending)
-                        self.trendingMovies = self.movieRepository.fetchMoviesFromDatabase(inMovieGroup: .trending)
                     }
 
                 case .topRated:
                     DispatchQueue.main.async {
                         self.movieRepository.saveMoviesToDatabase(movies: value, group: .topRated)
-                        self.topRatedMovies = self.movieRepository.fetchMoviesFromDatabase(inMovieGroup: .topRated)
                     }
 
                 case .recommended:
                     DispatchQueue.main.async {
                         self.movieRepository.saveMoviesToDatabase(movies: value, group: .recommended)
-                        self.recommendedMovies = self.movieRepository.fetchMoviesFromDatabase(inMovieGroup: .recommended)
                     }
                 }
             }
 
             DispatchQueue.main.async {
+                self.getDataFromDatabase()
                 self.nonFocusTableView.reloadData()
             }
         }
