@@ -84,8 +84,6 @@ class MovieListViewController: UIViewController {
                     self.movieRepository.saveGenresToDatabase(genres: genres)
                     self.genres = self.movieRepository.fetchGenresFromDatabase()
                 }
-
-                print("success žanrovi")
             case .failure(let error):
                 print(error)
             }
@@ -98,8 +96,6 @@ class MovieListViewController: UIViewController {
             case .failure(let error):
                 print(error)
             case .success(let value):
-                print("success filmovi")
-
                 switch group {
                 case .popular:
                     DispatchQueue.main.async {
