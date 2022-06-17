@@ -83,8 +83,33 @@ class RoundImageBackgroundView: UIView {
 
     @objc private func heartTapped() {
         flag.toggle()
-        imageView.image = (flag == false ?  heartImage : filledHeartImage)
-        delegate?.heartTapped(state: flag)
+        
+        if flag == false {
+            imageView.image = filledHeartImage
+            UIImageView.animate(
+                withDuration: 1,
+                animations: {
+                    self.imageView.transform = self.imageView.transform.scaledBy(x: 0.01, y: 0.01)
+                }, completion: { [weak self] _ in
+                    guard let self = self else { return }
+
+                    self.imageView.transform = .identity
+                    self.imageView.image = self.heartImage
+                    self.delegate?.heartTapped(state: false)
+                })
+        } else {
+            imageView.transform = imageView.transform.scaledBy(x: 0.01, y: 0.01)
+            imageView.image = filledHeartImage
+            UIImageView.animate(
+                withDuration: 1,
+                animations: {
+                    self.imageView.transform = self.imageView.transform.scaledBy(x: 100, y: 100)
+                }, completion: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.imageView.image = self.filledHeartImage
+                    self.delegate?.heartTapped(state: true)
+                })
+        }
     }
 
     override func layoutSubviews() {
