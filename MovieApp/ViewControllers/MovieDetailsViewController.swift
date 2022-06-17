@@ -44,6 +44,7 @@ class MovieDetailsViewController: UIViewController {
             DispatchQueue.main.async {
                 self.setUpNavBar()
                 self.buildViews()
+                self.imageView.setAnimations(position: self.view.frame.width)
                 self.getData()
             }
         }, unconnected: {
@@ -79,6 +80,8 @@ class MovieDetailsViewController: UIViewController {
     }
 
     private func createViews() {
+        imageView = OverlayImageView()
+
         activityIndicatorView = UIActivityIndicatorView(style: .large)
 
         overviewLabel = UILabel()
@@ -100,8 +103,6 @@ class MovieDetailsViewController: UIViewController {
         peopleCollection.delegate = self
         peopleCollection.dataSource = self
         peopleCollection.isScrollEnabled = false
-
-        imageView = OverlayImageView()
     }
 
     private func addSubviews() {
@@ -210,6 +211,8 @@ class MovieDetailsViewController: UIViewController {
         }
 
         imageView.set(data: OverlayImageViewData(image: image, title: title, year: year, date: date, genres: String(genresData.dropLast(2)), duration: duration))
+
+        imageView.startAnimations()
 
         overviewDescription.text = overview
     }

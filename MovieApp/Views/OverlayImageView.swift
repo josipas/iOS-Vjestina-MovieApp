@@ -21,6 +21,34 @@ class OverlayImageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    public func setAnimations(position: CGFloat) {
+        titleYearLabel.transform = titleYearLabel.transform.translatedBy(x: position, y: 0)
+        dateLabel.transform = dateLabel.transform.translatedBy(x: position, y: 0)
+        genresDurationLabel.transform = genresDurationLabel.transform.translatedBy(x: position, y: 0)
+    }
+
+    public func startAnimations() {
+        UILabel.animate(
+            withDuration: 1,
+            animations: {
+                self.titleYearLabel.transform = .identity
+            })
+
+        UILabel.animate(
+            withDuration: 1,
+            delay: 0.5,
+            animations: {
+                self.dateLabel.transform = .identity
+            })
+
+        UILabel.animate(
+            withDuration: 1,
+            delay: 0.75,
+            options: .curveEaseInOut, animations: {
+                self.genresDurationLabel.transform = .identity
+            })
+    }
+
     public func set(data: OverlayImageViewData) {
         backgroundImageView.image = data.image
         titleYearLabel.attributedText = NSMutableAttributedString.getAPartialBoldAttributedString(fromString: "\(data.title) \(data.year)",withSubstring: "\(data.title)", forSize: 24, color: .white)
